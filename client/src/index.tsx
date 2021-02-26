@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import { ChakraProvider } from '@chakra-ui/react'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import { QueryClient, QueryClientProvider } from 'react-query'
-
-const c = new QueryClient()
+import { QueryClientProvider } from 'react-query'
+import { client } from './api'
 
 ReactDOM.render(
 	<React.StrictMode>
 		<ChakraProvider>
-			<QueryClientProvider client={c}>
+			<QueryClientProvider client={client}>
 				<ReactQueryDevtools initialIsOpen={true} />
 				<App />
 			</QueryClientProvider>
