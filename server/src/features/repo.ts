@@ -1,10 +1,10 @@
 import * as TE from 'fp-ts/TaskEither'
 import * as O from 'fp-ts/Option'
-import { FetchError } from '../../infrastructure/fetch'
-import { teFetch } from '../../infrastructure/fetch'
+import { FetchError } from '../infrastructure/fetch'
+import { teFetch } from '../infrastructure/fetch'
 import fetch from 'node-fetch'
 
-type CATEGORY = 'beanies' | 'facemasks' | 'gloves'
+export type CATEGORY = 'beanies' | 'facemasks' | 'gloves'
 
 export const getCategory: (
 	category: CATEGORY
