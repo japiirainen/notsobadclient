@@ -21,4 +21,5 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Category = void 0;
 const I = __importStar(require("io-ts"));
-exports.Category = I.interface({});
+const product_1 = require("./product");
+exports.Category = I.array(product_1.Product);

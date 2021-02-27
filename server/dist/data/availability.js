@@ -19,13 +19,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Product = void 0;
+exports.Availability = exports.AvailabilityRaw = void 0;
 const I = __importStar(require("io-ts"));
-exports.Product = I.interface({
-    color: I.array(I.string),
-    id: I.string,
-    name: I.string,
-    manufacturer: I.string,
-    price: I.number,
-    type: I.string,
-});
+const availabilityItem_1 = require("./availabilityItem");
+exports.AvailabilityRaw = I.array(availabilityItem_1.AvailabilityItemRaw);
+exports.Availability = I.array(availabilityItem_1.AvailabilityItem);

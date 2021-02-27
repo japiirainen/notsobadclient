@@ -19,13 +19,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Product = void 0;
-const I = __importStar(require("io-ts"));
-exports.Product = I.interface({
-    color: I.array(I.string),
-    id: I.string,
-    name: I.string,
-    manufacturer: I.string,
-    price: I.number,
-    type: I.string,
-});
+exports.router = void 0;
+const E = __importStar(require("fp-ts/Either"));
+const function_1 = require("fp-ts/function");
+const error_1 = require("../infrastructure/error");
+const service_1 = require("./service");
+exports.router = {
+    test(_, res) {
+        service_1.getAllProductsFromCategory('beanies')().then(r => function_1.pipe(r, E.fold(error_1.processError(res), products => res.status(200).json({ products }))));
+    },
+    test2(_, res) {
+        service_1.getAvailabilitiesFromMan('umpante')().then(r => function_1.pipe(r, E.fold(error_1.processError(res), av => res.status(200).json({ av }))));
+    },
+};

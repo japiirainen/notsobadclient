@@ -1,7 +1,6 @@
 import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
 import * as E from 'fp-ts/Either'
-import * as O from 'fp-ts/Option'
 import { CustomError } from 'ts-custom-error'
 import { Category, CategoryT } from '../data/category'
 import { ApplicationError } from '../infrastructure/error'
@@ -52,7 +51,7 @@ export const getAllProductsFromCategory: (
 		)
 	)
 
-export const getAllAvailabilities: (
+export const getAvailabilitiesFromMan: (
 	manufacturer: string
 ) => TE.TaskEither<NoAvailabilitiesRawError | AvailabilityRawDecodeError, AvailabilityRawT> = m =>
 	pipe(

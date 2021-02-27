@@ -9,9 +9,9 @@ export type CATEGORY = 'beanies' | 'facemasks' | 'gloves'
 export const getCategory: (
 	category: CATEGORY
 ) => TE.TaskEither<FetchError, O.Option<unknown>> = c =>
-	teFetch(baseUrl => fetch(`/${baseUrl}/products/${c}`))
+	teFetch(baseUrl => fetch(`${baseUrl}/products/${c}`))
 
 export const getAvailabilities: (
 	manufacturer: string
 ) => TE.TaskEither<FetchError, O.Option<unknown>> = m =>
-	teFetch(baseUrl => fetch(`/${baseUrl}/availability/${m}`))
+	teFetch(baseUrl => fetch(`${baseUrl}/availability/${m}`))

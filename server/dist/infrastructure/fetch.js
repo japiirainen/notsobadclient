@@ -19,13 +19,30 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Product = void 0;
-const I = __importStar(require("io-ts"));
-exports.Product = I.interface({
-    color: I.array(I.string),
-    id: I.string,
-    name: I.string,
-    manufacturer: I.string,
-    price: I.number,
-    type: I.string,
-});
+exports.teFetch = exports.FetchError = void 0;
+const ts_custom_error_1 = require("ts-custom-error");
+const uuid_1 = require("uuid");
+const TE = __importStar(require("fp-ts/TaskEither"));
+const O = __importStar(require("fp-ts/Option"));
+const config_1 = require("./config");
+class FetchError extends ts_custom_error_1.CustomError {
+    constructor() {
+        super(...arguments);
+        this.status = 500;
+        this.code = uuid_1.v4();
+        this.log = true;
+    }
+}
+exports.FetchError = FetchError;
+const teFetch = (f) => TE.tryCatch(async () => {
+    const baseUrl = config_1.config.apiBase;
+    try {
+        const res = await f(baseUrl);
+        const json = await res.json();
+        return O.fromNullable(json);
+    }
+    catch (e) {
+        throw new FetchError(e.message);
+    }
+}, () => new FetchError('fetch error'));
+exports.teFetch = teFetch;
