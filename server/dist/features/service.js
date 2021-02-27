@@ -19,10 +19,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAvailabilitiesFromMan = exports.getAllProductsFromCategory = void 0;
+exports.getProductsWithAvailability = exports.availabilitiesForProducts = exports.productstToManSet = exports.getAvailabilitiesFromMan = exports.getAllProductsFromCategory = void 0;
+/* eslint-disable no-mixed-spaces-and-tabs */
 const function_1 = require("fp-ts/function");
 const TE = __importStar(require("fp-ts/TaskEither"));
 const E = __importStar(require("fp-ts/Either"));
+const S = __importStar(require("fp-ts/Set"));
+const A = __importStar(require("fp-ts/Array"));
 const ts_custom_error_1 = require("ts-custom-error");
 const category_1 = require("../data/category");
 const repo_1 = require("./repo");
@@ -63,3 +66,28 @@ const getAllProductsFromCategory = c => function_1.pipe(repo_1.getCategory(c), T
 exports.getAllProductsFromCategory = getAllProductsFromCategory;
 const getAvailabilitiesFromMan = m => function_1.pipe(repo_1.getAvailabilities(m), TE.chain(maybeUnknown => function_1.pipe(maybeUnknown, TE.fromOption(() => new NoAvailabilitiesRawError()))), TE.chain(unknown => function_1.pipe(unknown, availability_1.AvailabilityRaw.decode, E.mapLeft(() => new AvailabilityRawDecodeError()), TE.fromEither)));
 exports.getAvailabilitiesFromMan = getAvailabilitiesFromMan;
+const eqManufacturer = {
+    equals: (x, y) => x === y,
+};
+const productstToManSet = (ps) => function_1.pipe(ps, A.map(({ manufacturer }) => manufacturer), S.fromArray(eqManufacturer));
+exports.productstToManSet = productstToManSet;
+const availabilitiesForProducts = (products) => {
+    const noDubs = [...exports.productstToManSet(products)];
+    const tasks = noDubs.map(exports.getAvailabilitiesFromMan);
+    return function_1.pipe(A.array.sequence(TE.taskEither)(tasks), TE.map(avs => avs.flat()));
+};
+exports.availabilitiesForProducts = availabilitiesForProducts;
+const getProductsWithAvailability = (category) => function_1.pipe(TE.bindTo('ps')(exports.getAllProductsFromCategory(category)), TE.bind('as', ({ ps }) => exports.availabilitiesForProducts(ps)), TE.bind('categoryWithAvailabilities', ({ as, ps }) => {
+    const asMap = availaBilitiesToMap(as);
+    const psWithAvailability = ps.map(p => {
+        const avFowP = asMap.get(p.id);
+        return avFowP ? { ...p, availability: avFowP } : { ...p, availability: 'not found' };
+    });
+    return TE.of(psWithAvailability);
+}), TE.map(({ ps, as, categoryWithAvailabilities }) => ({ ps, as, categoryWithAvailabilities })));
+exports.getProductsWithAvailability = getProductsWithAvailability;
+const availaBilitiesToMap = (as) => {
+    const asMap = new Map();
+    as.forEach(a => asMap.set(a.id, a.DATAPAYLOAD));
+    return asMap;
+};

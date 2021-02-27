@@ -19,7 +19,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Category = void 0;
+exports.CategoryWithAvailability = exports.Category = void 0;
 const I = __importStar(require("io-ts"));
 const product_1 = require("./product");
 exports.Category = I.array(product_1.Product);
+exports.CategoryWithAvailability = I.array(product_1.ProductWithAvailability);

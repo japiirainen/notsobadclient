@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Product = void 0;
+exports.ProductWithAvailability = exports.Product = void 0;
 const I = __importStar(require("io-ts"));
 exports.Product = I.interface({
     color: I.array(I.string),
@@ -28,4 +28,13 @@ exports.Product = I.interface({
     manufacturer: I.string,
     price: I.number,
     type: I.string,
+});
+exports.ProductWithAvailability = I.interface({
+    color: I.array(I.string),
+    id: I.string,
+    name: I.string,
+    manufacturer: I.string,
+    price: I.number,
+    type: I.string,
+    availability: I.string,
 });

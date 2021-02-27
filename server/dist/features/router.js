@@ -31,4 +31,7 @@ exports.router = {
     test2(_, res) {
         service_1.getAvailabilitiesFromMan('umpante')().then(r => function_1.pipe(r, E.fold(error_1.processError(res), av => res.status(200).json({ av }))));
     },
+    test3(_, res) {
+        service_1.getProductsWithAvailability('beanies')().then(r => function_1.pipe(r, E.fold(error_1.processError(res), ({ as, ps, categoryWithAvailabilities }) => res.status(200).json({ as, ps, categoryWithAvailabilities }))));
+    },
 };

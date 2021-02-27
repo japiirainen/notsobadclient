@@ -6,7 +6,7 @@ import { router } from './features/router'
 export const createApp = async (): Promise<Express> => {
 	const app = express()
 	const v1Routes = express.Router()
-	v1Routes.get('/test', router.test).get('/test2', router.test2)
+	v1Routes.get('/test', router.test).get('/test2', router.test2).get('/test3', router.test3)
 	// ? Auth
 
 	app.use(morgan('dev'))

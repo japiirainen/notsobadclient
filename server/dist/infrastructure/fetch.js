@@ -39,7 +39,7 @@ const teFetch = (f) => TE.tryCatch(async () => {
     try {
         const res = await f(baseUrl);
         const json = await res.json();
-        return O.fromNullable(json);
+        return json.response ? O.fromNullable(json.response) : O.fromNullable(json);
     }
     catch (e) {
         throw new FetchError(e.message);
