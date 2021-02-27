@@ -29,8 +29,18 @@ export const router = {
 		getProductsWithAvailability('beanies')().then(r =>
 			pipe(
 				r,
-				E.fold(processError(res), ({ as, ps, categoryWithAvailabilities }) =>
-					res.status(200).json({ as, ps, categoryWithAvailabilities })
+				E.fold(processError(res), ({ categoryWithAvailabilities }) =>
+					res.status(200).json({ categoryWithAvailabilities })
+				)
+			)
+		)
+	},
+	productCategory(req: Request, res: Response): void {
+		getProductsWithAvailability(req.params.category)().then(r =>
+			pipe(
+				r,
+				E.fold(processError(res), ({ categoryWithAvailabilities }) =>
+					res.status(200).json({ categoryWithAvailabilities })
 				)
 			)
 		)

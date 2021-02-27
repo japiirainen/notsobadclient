@@ -11,7 +11,11 @@ const router_1 = require("./features/router");
 const createApp = async () => {
     const app = express_1.default();
     const v1Routes = express_1.default.Router();
-    v1Routes.get('/test', router_1.router.test).get('/test2', router_1.router.test2).get('/test3', router_1.router.test3);
+    v1Routes
+        .get('/test', router_1.router.test)
+        .get('/test2', router_1.router.test2)
+        .get('/test3', router_1.router.test3)
+        .get('/category/:category', router_1.router.productCategory);
     // ? Auth
     app.use(morgan_1.default('dev'))
         .use(cors_1.default({

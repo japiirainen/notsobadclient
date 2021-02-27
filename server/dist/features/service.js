@@ -30,6 +30,7 @@ const ts_custom_error_1 = require("ts-custom-error");
 const category_1 = require("../data/category");
 const repo_1 = require("./repo");
 const availability_1 = require("../data/availability");
+const regex_1 = require("../infrastructure/regex");
 class NoProductsError extends ts_custom_error_1.CustomError {
     constructor() {
         super(...arguments);
@@ -62,6 +63,14 @@ class AvailabilityRawDecodeError extends ts_custom_error_1.CustomError {
         this.log = true;
     }
 }
+class CategoryParamDecodeError extends ts_custom_error_1.CustomError {
+    constructor() {
+        super(...arguments);
+        this.status = 400;
+        this.code = 'CategoryParamDecodeError';
+        this.log = true;
+    }
+}
 const getAllProductsFromCategory = c => function_1.pipe(repo_1.getCategory(c), TE.chain(maybeUnknown => function_1.pipe(maybeUnknown, TE.fromOption(() => new NoProductsError()))), TE.chain(unknown => function_1.pipe(unknown, category_1.Category.decode, E.mapLeft(() => new CategoryDecodeError()), TE.fromEither)));
 exports.getAllProductsFromCategory = getAllProductsFromCategory;
 const getAvailabilitiesFromMan = m => function_1.pipe(repo_1.getAvailabilities(m), TE.chain(maybeUnknown => function_1.pipe(maybeUnknown, TE.fromOption(() => new NoAvailabilitiesRawError()))), TE.chain(unknown => function_1.pipe(unknown, availability_1.AvailabilityRaw.decode, E.mapLeft(() => new AvailabilityRawDecodeError()), TE.fromEither)));
@@ -77,17 +86,20 @@ const availabilitiesForProducts = (products) => {
     return function_1.pipe(A.array.sequence(TE.taskEither)(tasks), TE.map(avs => avs.flat()));
 };
 exports.availabilitiesForProducts = availabilitiesForProducts;
-const getProductsWithAvailability = (category) => function_1.pipe(TE.bindTo('ps')(exports.getAllProductsFromCategory(category)), TE.bind('as', ({ ps }) => exports.availabilitiesForProducts(ps)), TE.bind('categoryWithAvailabilities', ({ as, ps }) => {
+const decodeCatParam = (maybeCategory) => function_1.pipe(maybeCategory, category_1.categoryParam.decode, E.mapLeft(() => new CategoryParamDecodeError()), TE.fromEither);
+const getProductsWithAvailability = (category) => function_1.pipe(TE.bindTo('category')(decodeCatParam(category)), TE.bind('ps', ({ category }) => exports.getAllProductsFromCategory(category)), TE.bind('as', ({ ps }) => exports.availabilitiesForProducts(ps)), TE.bind('categoryWithAvailabilities', ({ as, ps }) => {
     const asMap = availaBilitiesToMap(as);
     const psWithAvailability = ps.map(p => {
         const avFowP = asMap.get(p.id);
         return avFowP ? { ...p, availability: avFowP } : { ...p, availability: 'not found' };
     });
     return TE.of(psWithAvailability);
-}), TE.map(({ ps, as, categoryWithAvailabilities }) => ({ ps, as, categoryWithAvailabilities })));
+}), TE.map(({ categoryWithAvailabilities }) => ({ categoryWithAvailabilities })));
 exports.getProductsWithAvailability = getProductsWithAvailability;
 const availaBilitiesToMap = (as) => {
     const asMap = new Map();
-    as.forEach(a => asMap.set(a.id, a.DATAPAYLOAD));
+    // ? availability ids are CAPS so need to make lowerCase
+    // ? get the availability value with a simple regex
+    as.forEach(a => asMap.set(a.id.toLowerCase(), regex_1.getAvailabilityR(a.DATAPAYLOAD)));
     return asMap;
 };

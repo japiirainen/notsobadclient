@@ -5,12 +5,13 @@ import * as E from 'fp-ts/Either'
 import * as S from 'fp-ts/Set'
 import * as A from 'fp-ts/Array'
 import { CustomError } from 'ts-custom-error'
-import { Category, CategoryT, CategoryWithAvailabilityT } from '../data/category'
+import { Category, categoryParam, CategoryT, CategoryWithAvailabilityT } from '../data/category'
 import { ApplicationError } from '../infrastructure/error'
 import { getCategory, CATEGORY, getAvailabilities } from './repo'
 import { AvailabilityRaw, AvailabilityRawT } from '../data/availability'
 import { Eq } from 'fp-ts/lib/Eq'
 import { AvailabilityItemRawT } from '../data/availabilityItem'
+import { getAvailabilityR } from '../infrastructure/regex'
 
 class NoProductsError extends CustomError implements ApplicationError {
 	status = 400
@@ -32,6 +33,11 @@ class NoAvailabilitiesRawError extends CustomError implements ApplicationError {
 class AvailabilityRawDecodeError extends CustomError implements ApplicationError {
 	status = 400
 	code = 'AvailabilityRawDecodeError'
+	log = true
+}
+class CategoryParamDecodeError extends CustomError implements ApplicationError {
+	status = 400
+	code = 'CategoryParamDecodeError'
 	log = true
 }
 
@@ -99,9 +105,18 @@ export const availabilitiesForProducts = (
 	)
 }
 
-export const getProductsWithAvailability = (category: CATEGORY) =>
+const decodeCatParam = (maybeCategory: unknown) =>
 	pipe(
-		TE.bindTo('ps')(getAllProductsFromCategory(category)),
+		maybeCategory,
+		categoryParam.decode,
+		E.mapLeft(() => new CategoryParamDecodeError()),
+		TE.fromEither
+	)
+
+export const getProductsWithAvailability = (category: unknown) =>
+	pipe(
+		TE.bindTo('category')(decodeCatParam(category)),
+		TE.bind('ps', ({ category }) => getAllProductsFromCategory(category as CATEGORY)),
 		TE.bind('as', ({ ps }) => availabilitiesForProducts(ps)),
 		TE.bind('categoryWithAvailabilities', ({ as, ps }) => {
 			const asMap = availaBilitiesToMap(as)
@@ -111,11 +126,13 @@ export const getProductsWithAvailability = (category: CATEGORY) =>
 			})
 			return TE.of(psWithAvailability)
 		}),
-		TE.map(({ ps, as, categoryWithAvailabilities }) => ({ ps, as, categoryWithAvailabilities }))
+		TE.map(({ categoryWithAvailabilities }) => ({ categoryWithAvailabilities }))
 	)
 
 const availaBilitiesToMap = (as: AvailabilityRawT): Map<string, string> => {
 	const asMap = new Map()
-	as.forEach(a => asMap.set(a.id, a.DATAPAYLOAD))
+	// ? availability ids are CAPS so need to make lowerCase
+	// ? get the availability value with a simple regex
+	as.forEach(a => asMap.set(a.id.toLowerCase(), getAvailabilityR(a.DATAPAYLOAD)))
 	return asMap
 }
