@@ -17,7 +17,7 @@ export const createApp = async (): Promise<Express> => {
 		.use(
 			cors({
 				credentials: true,
-				origin: 'http://localhost:4000',
+				origin: 'http://localhost:8081',
 			})
 		)
 		.use(express.json())

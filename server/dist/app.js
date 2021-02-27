@@ -20,7 +20,7 @@ const createApp = async () => {
     app.use(morgan_1.default('dev'))
         .use(cors_1.default({
         credentials: true,
-        origin: 'http://localhost:4000',
+        origin: 'http://localhost:8081',
     }))
         .use(express_1.default.json())
         .use('/api', v1Routes);

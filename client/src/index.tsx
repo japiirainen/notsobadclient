@@ -4,14 +4,18 @@ import App from './App'
 import { ChakraProvider } from '@chakra-ui/react'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { QueryClientProvider } from 'react-query'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { client } from './api'
+import { theme } from './theme'
 
 ReactDOM.render(
 	<React.StrictMode>
-		<ChakraProvider>
+		<ChakraProvider theme={theme}>
 			<QueryClientProvider client={client}>
 				<ReactQueryDevtools initialIsOpen={true} />
-				<App />
+				<Router>
+					<App />
+				</Router>
 			</QueryClientProvider>
 		</ChakraProvider>
 	</React.StrictMode>,

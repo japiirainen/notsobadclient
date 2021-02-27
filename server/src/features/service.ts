@@ -4,42 +4,18 @@ import * as TE from 'fp-ts/TaskEither'
 import * as E from 'fp-ts/Either'
 import * as S from 'fp-ts/Set'
 import * as A from 'fp-ts/Array'
-import { CustomError } from 'ts-custom-error'
 import { Category, categoryParam, CategoryT, CategoryWithAvailabilityT } from '../data/category'
-import { ApplicationError } from '../infrastructure/error'
 import { getCategory, CATEGORY, getAvailabilities } from './repo'
 import { AvailabilityRaw, AvailabilityRawT } from '../data/availability'
 import { Eq } from 'fp-ts/lib/Eq'
-import { AvailabilityItemRawT } from '../data/availabilityItem'
 import { getAvailabilityR } from '../infrastructure/regex'
-
-class NoProductsError extends CustomError implements ApplicationError {
-	status = 400
-	code = 'NoProductsError'
-	log = true
-}
-
-class CategoryDecodeError extends CustomError implements ApplicationError {
-	status = 400
-	code = 'CategoryDecodeError'
-	log = true
-}
-class NoAvailabilitiesRawError extends CustomError implements ApplicationError {
-	status = 400
-	code = 'NoAvailabilitiesRawError'
-	log = true
-}
-
-class AvailabilityRawDecodeError extends CustomError implements ApplicationError {
-	status = 400
-	code = 'AvailabilityRawDecodeError'
-	log = true
-}
-class CategoryParamDecodeError extends CustomError implements ApplicationError {
-	status = 400
-	code = 'CategoryParamDecodeError'
-	log = true
-}
+import {
+	NoProductsError,
+	CategoryDecodeError,
+	NoAvailabilitiesRawError,
+	AvailabilityRawDecodeError,
+	CategoryParamDecodeError,
+} from '../data/errors'
 
 export const getAllProductsFromCategory: (
 	category: CATEGORY
