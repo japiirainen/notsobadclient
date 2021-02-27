@@ -1,9 +1,10 @@
-import { Heading, Icon, useColorModeValue } from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
+import { Heading, useColorModeValue } from '@chakra-ui/react'
+import { Link, useHistory } from 'react-router-dom'
 import React from 'react'
 
 export const NavHeader: React.FC = () => {
 	const navheaderColor = useColorModeValue('black', 'neonPurple.100')
+	const router = useHistory()
 	return (
 		<Link to={'/'}>
 			<a>
@@ -13,6 +14,8 @@ export const NavHeader: React.FC = () => {
 					fontSize={{ base: '1.8rem', md: '2rem' }}
 					fontFamily={'navHeader'}
 					color={navheaderColor}
+					onClick={() => router.push('/')}
+					_hover={{ cursor: 'pointer' }}
 				>
 					Products
 				</Heading>

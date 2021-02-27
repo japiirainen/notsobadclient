@@ -7,6 +7,7 @@ import { Beanies } from './views/beanies'
 import { FaceMasks } from './views/facemasks'
 import { Gloves } from './views/gloves'
 import { Nav } from './components/Nav'
+import { Home } from './views/home'
 
 const App: React.FC<{}> = () => {
 	const { data, isLoading, refetch } = useQuery('beanies', () => getCategory('beanies'))
@@ -18,18 +19,13 @@ const App: React.FC<{}> = () => {
 			</Flex>
 		)
 	}
-	if (!data.categoryWithAvailabilities) {
-		return (
-			<Flex justify={'center'}>
-				<Nav />
-				<chakra.pre mt={100}>{JSON.stringify(data, null, 2)}</chakra.pre>
-			</Flex>
-		)
-	}
 	return (
 		<Flex className="App">
 			<Nav />
 			<Switch>
+				<Route exact={true} path={'/'}>
+					<Home data={data.categoryWithAvailabilities} />
+				</Route>
 				<Route path={'/beanies'}>
 					<Beanies data={data.categoryWithAvailabilities} />
 				</Route>

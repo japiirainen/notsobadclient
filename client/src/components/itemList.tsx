@@ -22,7 +22,11 @@ interface ItemListProps {
 
 export const ItemList: React.FC<ItemListProps> = ({ category, data }) => {
 	if (!data) {
-		return <Heading mt={150}>no data...</Heading>
+		return (
+			<Flex mt={150} alignItems={'center'} justify={'center'}>
+				<Heading>no data...</Heading>
+			</Flex>
+		)
 	}
 	const lessData = data.slice(0, 100)
 	return (
