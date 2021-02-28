@@ -10457,21 +10457,6 @@ var Table$1 = /*#__PURE__*/forwardRef((props, ref) => {
   }, tableProps)));
 });
 
-var TableCaption = /*#__PURE__*/forwardRef((props, ref) => {
-  var {
-    placement = "bottom"
-  } = props,
-      rest = _objectWithoutPropertiesLoose$7(props, ["placement"]);
-
-  var styles = useStyles();
-  return /*#__PURE__*/react.createElement(chakra.caption, _extends$l({}, rest, {
-    ref: ref,
-    __css: _extends$l({}, styles.caption, {
-      captionSide: placement
-    })
-  }));
-});
-
 var Thead = /*#__PURE__*/forwardRef((props, ref) => {
   var styles = useStyles();
   return /*#__PURE__*/react.createElement(chakra.thead, _extends$l({}, props, {
@@ -10524,4 +10509,4 @@ var Td = /*#__PURE__*/forwardRef((_ref2, ref) => {
   }));
 });
 
-export { Box, Button$1 as Button, ChakraProvider, Flex, Heading$1 as Heading, Spinner$1 as Spinner, Table$1 as Table, TableCaption, Tbody, Td, Th, Thead, Tr, extendTheme, useBreakpointValue, useColorModeValue };
+export { Box, Button$1 as Button, ChakraProvider, Flex, Heading$1 as Heading, Spinner$1 as Spinner, Table$1 as Table, Tbody, Td, Th, Thead, Tr, extendTheme, useBreakpointValue, useColorModeValue };
