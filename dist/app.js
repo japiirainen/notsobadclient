@@ -16,7 +16,7 @@ const createApp = async () => {
     app.use(morgan_1.default('dev'))
         .use(cors_1.default({
         credentials: true,
-        origin: 'http://localhost:8081',
+        origin: 'https://not-so-bad.herokuapp.com',
     }))
         .use(express_1.default.json())
         .use('/api', apiRoutes)

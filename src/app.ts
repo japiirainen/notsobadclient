@@ -13,7 +13,7 @@ export const createApp = async (): Promise<Express> => {
 		.use(
 			cors({
 				credentials: true,
-				origin: 'http://localhost:8081',
+				origin: 'https://not-so-bad.herokuapp.com',
 			})
 		)
 		.use(express.json())
