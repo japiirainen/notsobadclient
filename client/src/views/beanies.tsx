@@ -2,18 +2,13 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import { getCategory } from '../api/category'
 import { ItemList } from '../components/itemList'
-import { Flex, Heading, Text } from '@chakra-ui/react'
+import { LSpinner } from 'src/components/lSpinner'
 
 export const Beanies = () => {
 	const { data } = useQuery('beanies', () => getCategory('beanies'))
 
 	if (!data?.categoryWithAvailabilities) {
-		return (
-			<Flex mt={150}>
-				<Heading>No beanies just yet.</Heading>
-				<Text>please try again later</Text>
-			</Flex>
-		)
+		return <LSpinner />
 	}
 	return <ItemList category={'beanies'} data={data.categoryWithAvailabilities} />
 }

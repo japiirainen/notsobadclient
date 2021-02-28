@@ -88,17 +88,6 @@ export const ItemList: React.FC<ItemListProps> = ({ category, data }) => {
 								)
 							})}
 					</Tbody>
-					<Tfoot>
-						<Tr>
-							<Th>To convert</Th>
-							<Th>into</Th>
-							<Th isNumeric>multiply by</Th>
-							<Th>To convert</Th>
-							<Th>into</Th>
-							<Th isNumeric>multiply by</Th>
-							<Th isNumeric>multiply by</Th>
-						</Tr>
-					</Tfoot>
 				</Table>
 			</Flex>
 		</InfiniteScroll>
