@@ -8,13 +8,13 @@ const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const router_1 = require("./features/router");
+const cache_1 = require("./infrastructure/cache");
 const createApp = async () => {
     const app = express_1.default();
     const v1Routes = express_1.default.Router();
     v1Routes
-        .get('/test', router_1.router.test)
-        .get('/test2', router_1.router.test2)
-        .get('/test3', router_1.router.test3)
+        .get('/test', (req, res) => res.json({ cache: cache_1.cache }))
+        .get('/test2', (req, res) => res.json({ avs: cache_1.cache.availabilities }))
         .get('/category/:category', router_1.router.productCategory);
     // ? Auth
     app.use(morgan_1.default('dev'))

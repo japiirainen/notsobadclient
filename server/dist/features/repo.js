@@ -10,4 +10,3 @@ const getCategory = c => fetch_1.teFetch(baseUrl => node_fetch_1.default(`${base
 exports.getCategory = getCategory;
 const getAvailabilities = m => fetch_1.teFetch(baseUrl => node_fetch_1.default(`${baseUrl}/availability/${m}`));
 exports.getAvailabilities = getAvailabilities;
-// teFetch(baseUrl => fetch(`https://bad-api-assignment.reaktor.com/v2/availability/umpante`))

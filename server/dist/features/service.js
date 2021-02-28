@@ -26,6 +26,7 @@ const TE = __importStar(require("fp-ts/TaskEither"));
 const E = __importStar(require("fp-ts/Either"));
 const S = __importStar(require("fp-ts/Set"));
 const A = __importStar(require("fp-ts/Array"));
+const cache_1 = require("../infrastructure/cache");
 const category_1 = require("../data/category");
 const repo_1 = require("./repo");
 const availability_1 = require("../data/availability");
@@ -40,16 +41,16 @@ const eqManufacturer = {
 };
 const productstToManSet = (ps) => function_1.pipe(ps, A.map(({ manufacturer }) => manufacturer), S.fromArray(eqManufacturer));
 exports.productstToManSet = productstToManSet;
-const availabilitiesForProducts = (products) => {
-    const noDubs = [...exports.productstToManSet(products)];
+const availabilitiesForProducts = (beanies, gloves, faceMasks) => {
+    const noDubs = [...exports.productstToManSet([...beanies, ...gloves, ...faceMasks])];
     const tasks = noDubs.map(exports.getAvailabilitiesFromMan);
     return function_1.pipe(A.array.sequence(TE.taskEither)(tasks), TE.map(avs => avs.flat()));
 };
 exports.availabilitiesForProducts = availabilitiesForProducts;
 const decodeCatParam = (maybeCategory) => function_1.pipe(maybeCategory, category_1.categoryParam.decode, E.mapLeft(() => new errors_1.CategoryParamDecodeError()), TE.fromEither);
-const getProductsWithAvailability = (category) => function_1.pipe(TE.bindTo('category')(decodeCatParam(category)), TE.bind('ps', ({ category }) => exports.getAllProductsFromCategory(category)), TE.bind('as', ({ ps }) => exports.availabilitiesForProducts(ps)), TE.bind('categoryWithAvailabilities', ({ as, ps }) => {
+const getProductsWithAvailability = (category) => function_1.pipe(TE.bindTo('category')(decodeCatParam(category)), TE.bind('ps', ({ category }) => cache_1.getFromCache(category)), TE.bind('as', () => cache_1.getFromCache('availabilities')), TE.bind('categoryWithAvailabilities', ({ as, ps }) => {
     const asMap = availaBilitiesToMap(as);
-    const psWithAvailability = ps.map(p => {
+    const psWithAvailability = ps.map((p) => {
         const avFowP = asMap.get(p.id);
         return avFowP ? { ...p, availability: avFowP } : { ...p, availability: 'not found' };
     });

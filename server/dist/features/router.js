@@ -25,15 +25,6 @@ const function_1 = require("fp-ts/function");
 const error_1 = require("../infrastructure/error");
 const service_1 = require("./service");
 exports.router = {
-    test(_, res) {
-        service_1.getAllProductsFromCategory('beanies')().then(r => function_1.pipe(r, E.fold(error_1.processError(res), products => res.status(200).json({ products }))));
-    },
-    test2(_, res) {
-        service_1.getAvailabilitiesFromMan('umpante')().then(r => function_1.pipe(r, E.fold(error_1.processError(res), av => res.status(200).json({ av }))));
-    },
-    test3(_, res) {
-        service_1.getProductsWithAvailability('beanies')().then(r => function_1.pipe(r, E.fold(error_1.processError(res), ({ categoryWithAvailabilities }) => res.status(200).json({ categoryWithAvailabilities }))));
-    },
     productCategory(req, res) {
         service_1.getProductsWithAvailability(req.params.category)().then(r => function_1.pipe(r, E.fold(error_1.processError(res), ({ categoryWithAvailabilities }) => res.status(200).json({ categoryWithAvailabilities }))));
     },

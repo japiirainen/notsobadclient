@@ -2,14 +2,14 @@ import cors from 'cors'
 import express, { Express } from 'express'
 import morgan from 'morgan'
 import { router } from './features/router'
+import { cache } from './infrastructure/cache'
 
 export const createApp = async (): Promise<Express> => {
 	const app = express()
 	const v1Routes = express.Router()
 	v1Routes
-		.get('/test', router.test)
-		.get('/test2', router.test2)
-		.get('/test3', router.test3)
+		.get('/test', (req, res) => res.json({ cache }))
+		.get('/test2', (req, res) => res.json({ avs: cache.availabilities }))
 		.get('/category/:category', router.productCategory)
 	// ? Auth
 

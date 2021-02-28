@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither'
 import * as E from 'fp-ts/Either'
 import * as S from 'fp-ts/Set'
 import * as A from 'fp-ts/Array'
+import { cache, CacheKey, getFromCache } from '../infrastructure/cache'
 import { Category, categoryParam, CategoryT, CategoryWithAvailabilityT } from '../data/category'
 import { getCategory, CATEGORY, getAvailabilities } from './repo'
 import { AvailabilityRaw, AvailabilityRawT } from '../data/availability'
@@ -16,6 +17,7 @@ import {
 	AvailabilityRawDecodeError,
 	CategoryParamDecodeError,
 } from '../data/errors'
+import { ProductT } from '../data/product'
 
 export const getAllProductsFromCategory: (
 	category: CATEGORY
@@ -71,9 +73,11 @@ export const productstToManSet = (ps: CategoryT): Set<string> =>
 	)
 
 export const availabilitiesForProducts = (
-	products: CategoryT
+	beanies: CategoryT,
+	gloves: CategoryT,
+	faceMasks: CategoryT
 ): TE.TaskEither<NoAvailabilitiesRawError | AvailabilityRawDecodeError, AvailabilityRawT> => {
-	const noDubs = [...productstToManSet(products)]
+	const noDubs = [...productstToManSet([...beanies, ...gloves, ...faceMasks])]
 	const tasks = noDubs.map(getAvailabilitiesFromMan)
 	return pipe(
 		A.array.sequence(TE.taskEither)(tasks),
@@ -92,11 +96,11 @@ const decodeCatParam = (maybeCategory: unknown) =>
 export const getProductsWithAvailability = (category: unknown) =>
 	pipe(
 		TE.bindTo('category')(decodeCatParam(category)),
-		TE.bind('ps', ({ category }) => getAllProductsFromCategory(category as CATEGORY)),
-		TE.bind('as', ({ ps }) => availabilitiesForProducts(ps)),
+		TE.bind('ps', ({ category }) => getFromCache(category as CacheKey)),
+		TE.bind('as', () => getFromCache('availabilities')),
 		TE.bind('categoryWithAvailabilities', ({ as, ps }) => {
 			const asMap = availaBilitiesToMap(as)
-			const psWithAvailability: CategoryWithAvailabilityT = ps.map(p => {
+			const psWithAvailability: CategoryWithAvailabilityT = ps.map((p: ProductT) => {
 				const avFowP = asMap.get(p.id)
 				return avFowP ? { ...p, availability: avFowP } : { ...p, availability: 'not found' }
 			})

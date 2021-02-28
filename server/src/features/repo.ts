@@ -15,4 +15,3 @@ export const getAvailabilities: (
 	manufacturer: string
 ) => TE.TaskEither<FetchError, O.Option<unknown>> = m =>
 	teFetch(baseUrl => fetch(`${baseUrl}/availability/${m}`))
-// teFetch(baseUrl => fetch(`https://bad-api-assignment.reaktor.com/v2/availability/umpante`))
