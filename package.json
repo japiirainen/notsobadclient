@@ -31,7 +31,7 @@
 		"eslint": "^7.19.0"
 	},
 	"scripts": {
-		"deps": "yarn && cd client && yarn",
+		"deps": "yarn",
 		"build": "NODE_ENV=production tsc",
 		"start": "NODE_ENV=production tsc && node dist/index.js",
 		"dev": "NODE_ENV=development tsc && node dist/index.js",

@@ -10,7 +10,7 @@ export const Beanies = () => {
 	if (!data?.categoryWithAvailabilities) {
 		return (
 			<Flex mt={150}>
-				<Heading>No data just yet.</Heading>
+				<Heading>No beanies just yet.</Heading>
 				<Text>please try again later</Text>
 			</Flex>
 		)

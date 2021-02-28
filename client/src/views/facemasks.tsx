@@ -10,7 +10,7 @@ export const FaceMasks = () => {
 	if (!data?.categoryWithAvailabilities) {
 		return (
 			<Flex mt={150}>
-				<Heading>No data just yet.</Heading>
+				<Heading>No facemasks just yet.</Heading>
 				<Text>please try again later</Text>
 			</Flex>
 		)
