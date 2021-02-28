@@ -1,12 +1,12 @@
-import { chakra, Flex, Heading, Spinner } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
+import { Flex, Spinner } from '@chakra-ui/react'
+import React from 'react'
 import { useQuery } from 'react-query'
-import { Switch, Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { getCategory } from './api/category'
+import { Nav } from './components/Nav'
 import { Beanies } from './views/beanies'
 import { FaceMasks } from './views/facemasks'
 import { Gloves } from './views/gloves'
-import { Nav } from './components/Nav'
 import { Home } from './views/home'
 
 const App: React.FC<{}> = () => {
@@ -20,22 +20,24 @@ const App: React.FC<{}> = () => {
 		)
 	}
 	return (
-		<Flex className="App">
+		<Flex m={0} p={0} justify={'center'}>
 			<Nav />
-			<Switch>
-				<Route exact={true} path={'/'}>
-					<Home data={data.categoryWithAvailabilities} />
-				</Route>
-				<Route path={'/beanies'}>
-					<Beanies data={data.categoryWithAvailabilities} />
-				</Route>
-				<Route path={'/facemasks'}>
-					<FaceMasks data={data.categoryWithAvailabilities} />
-				</Route>
-				<Route path={'/gloves'}>
-					<Gloves data={data.categoryWithAvailabilities} />
-				</Route>
-			</Switch>
+			<Flex className="App" flexDirection={'column'} alignItems={'center'} maxW={1500} w={1500}>
+				<Switch>
+					<Route exact={true} path={'/'}>
+						<Home />
+					</Route>
+					<Route path={'/beanies'}>
+						<Beanies />
+					</Route>
+					<Route path={'/facemasks'}>
+						<FaceMasks />
+					</Route>
+					<Route path={'/gloves'}>
+						<Gloves />
+					</Route>
+				</Switch>
+			</Flex>
 		</Flex>
 	)
 }
