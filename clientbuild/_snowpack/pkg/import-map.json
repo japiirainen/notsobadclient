@@ -1,0 +1,13 @@
+{
+  "imports": {
+    "@chakra-ui/react": "./@chakra-ui/react.js",
+    "fp-ts/function": "./fp-ts/function.js",
+    "io-ts": "./io-ts.js",
+    "react": "./react.js",
+    "react-dom": "./react-dom.js",
+    "react-infinite-scroll-component": "./react-infinite-scroll-component.js",
+    "react-query": "./react-query.js",
+    "react-query/devtools": "./react-query/devtools.js",
+    "react-router-dom": "./react-router-dom.js"
+  }
+}
