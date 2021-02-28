@@ -1,23 +1,22 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
-import { pipe } from 'fp-ts/function'
-import * as TE from 'fp-ts/TaskEither'
-import * as E from 'fp-ts/Either'
-import * as S from 'fp-ts/Set'
 import * as A from 'fp-ts/Array'
-import { cache, CacheKey, getFromCache } from '../infrastructure/cache'
-import { Category, categoryParam, CategoryT, CategoryWithAvailabilityT } from '../data/category'
-import { getCategory, CATEGORY, getAvailabilities } from './repo'
-import { AvailabilityRaw, AvailabilityRawT } from '../data/availability'
+import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
 import { Eq } from 'fp-ts/lib/Eq'
-import { getAvailabilityR } from '../infrastructure/regex'
+import * as S from 'fp-ts/Set'
+import * as TE from 'fp-ts/TaskEither'
+import { AvailabilityRaw, AvailabilityRawT } from '../data/availability'
+import { Category, categoryParam, CategoryT, CategoryWithAvailabilityT } from '../data/category'
 import {
-	NoProductsError,
-	CategoryDecodeError,
-	NoAvailabilitiesRawError,
 	AvailabilityRawDecodeError,
+	CategoryDecodeError,
 	CategoryParamDecodeError,
+	NoAvailabilitiesRawError,
+	NoProductsError,
 } from '../data/errors'
 import { ProductT } from '../data/product'
+import { CacheKey, CacheLookupError, getFromCache } from '../infrastructure/cache'
+import { getAvailabilityR } from '../infrastructure/regex'
+import { CATEGORY, getAvailabilities, getCategory } from './repo'
 
 export const getAllProductsFromCategory: (
 	category: CATEGORY
@@ -81,6 +80,8 @@ export const availabilitiesForProducts = (
 	const tasks = noDubs.map(getAvailabilitiesFromMan)
 	return pipe(
 		A.array.sequence(TE.taskEither)(tasks),
+		// ? propably should be using TE.flatten, fix if you have time
+		//@ts-ignore
 		TE.map(avs => avs.flat())
 	)
 }
@@ -93,7 +94,14 @@ const decodeCatParam = (maybeCategory: unknown) =>
 		TE.fromEither
 	)
 
-export const getProductsWithAvailability = (category: unknown) =>
+export const getProductsWithAvailability = (
+	category: unknown
+): TE.TaskEither<
+	CacheLookupError,
+	{
+		categoryWithAvailabilities: CategoryWithAvailabilityT
+	}
+> =>
 	pipe(
 		TE.bindTo('category')(decodeCatParam(category)),
 		TE.bind('ps', ({ category }) => getFromCache(category as CacheKey)),
@@ -106,7 +114,9 @@ export const getProductsWithAvailability = (category: unknown) =>
 			})
 			return TE.of(psWithAvailability)
 		}),
-		TE.map(({ categoryWithAvailabilities }) => ({ categoryWithAvailabilities }))
+		TE.map(({ categoryWithAvailabilities }) => ({
+			categoryWithAvailabilities: categoryWithAvailabilities as CategoryWithAvailabilityT,
+		}))
 	)
 
 const availaBilitiesToMap = (as: AvailabilityRawT): Map<string, string> => {

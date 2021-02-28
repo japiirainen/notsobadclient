@@ -1,24 +1,13 @@
-import { Flex, Spinner } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import React from 'react'
-import { useQuery } from 'react-query'
 import { Route, Switch } from 'react-router-dom'
-import { getCategory } from './api/category'
 import { Nav } from './components/Nav'
 import { Beanies } from './views/beanies'
 import { FaceMasks } from './views/facemasks'
 import { Gloves } from './views/gloves'
 import { Home } from './views/home'
 
-const App: React.FC<{}> = () => {
-	const { data, isLoading, refetch } = useQuery('beanies', () => getCategory('beanies'))
-	if (isLoading) {
-		return (
-			<Flex justify={'center'}>
-				<Nav />
-				<Spinner mt={100} size={'lg'} />
-			</Flex>
-		)
-	}
+const App = () => {
 	return (
 		<Flex m={0} p={0} justify={'center'}>
 			<Nav />

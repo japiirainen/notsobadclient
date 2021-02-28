@@ -1,4 +1,0 @@
-.env*
-.snowpack
-build
-node_modules

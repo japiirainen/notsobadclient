@@ -1,0 +1,6 @@
+.env*
+.snowpack
+build
+node_modules
+dist
+clientbuild
