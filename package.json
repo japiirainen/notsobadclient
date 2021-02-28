@@ -33,7 +33,7 @@
 	"scripts": {
 		"deps": "yarn --ignore-engines",
 		"build": "NODE_ENV=production tsc",
-		"start": "yarn deps && NODE_ENV=production tsc && node dist/index.js",
+		"start": "yarn deps && node dist/index.js",
 		"dev": "NODE_ENV=development tsc && node dist/index.js",
 		"c": "tsc --noEmit"
 	}
