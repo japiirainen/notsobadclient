@@ -1,16 +1,5 @@
 import React, {useState} from "../../_snowpack/pkg/react.js";
-import {
-  Flex,
-  Heading,
-  Table,
-  TableCaption,
-  Tbody,
-  Td,
-  Tfoot,
-  Th,
-  Thead,
-  Tr
-} from "../../_snowpack/pkg/@chakra-ui/react.js";
+import {Flex, Heading, Table, TableCaption, Tbody, Td, Th, Thead, Tr} from "../../_snowpack/pkg/@chakra-ui/react.js";
 import InfiniteScroll from "../../_snowpack/pkg/react-infinite-scroll-component.js";
 import {LSpinner} from "./lSpinner.js";
 export const ItemList = ({category, data}) => {
@@ -54,11 +43,5 @@ export const ItemList = ({category, data}) => {
     return /* @__PURE__ */ React.createElement(Tr, {
       key: i
     }, /* @__PURE__ */ React.createElement(Td, null, p.name), /* @__PURE__ */ React.createElement(Td, null, p.id), /* @__PURE__ */ React.createElement(Td, null, p.color.map((color) => /* @__PURE__ */ React.createElement("p", null, color))), /* @__PURE__ */ React.createElement(Td, null, p.manufacturer), /* @__PURE__ */ React.createElement(Td, null, p.price), /* @__PURE__ */ React.createElement(Td, null, p.type), /* @__PURE__ */ React.createElement(Td, null, p.availability));
-  })), /* @__PURE__ */ React.createElement(Tfoot, null, /* @__PURE__ */ React.createElement(Tr, null, /* @__PURE__ */ React.createElement(Th, null, "To convert"), /* @__PURE__ */ React.createElement(Th, null, "into"), /* @__PURE__ */ React.createElement(Th, {
-    isNumeric: true
-  }, "multiply by"), /* @__PURE__ */ React.createElement(Th, null, "To convert"), /* @__PURE__ */ React.createElement(Th, null, "into"), /* @__PURE__ */ React.createElement(Th, {
-    isNumeric: true
-  }, "multiply by"), /* @__PURE__ */ React.createElement(Th, {
-    isNumeric: true
-  }, "multiply by"))))));
+  })))));
 };

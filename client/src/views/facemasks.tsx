@@ -1,6 +1,6 @@
 import React from 'react'
 import { useQuery } from 'react-query'
-import { LSpinner } from 'src/components/lSpinner'
+import { LSpinner } from '../components/lSpinner'
 import { getCategory } from '../api/category'
 import { ItemList } from '../components/itemList'
 

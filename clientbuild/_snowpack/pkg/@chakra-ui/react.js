@@ -1,6 +1,6 @@
 import { r as react } from '../common/index-57a74e37.js';
 import { c as createCommonjsModule, a as commonjsGlobal } from '../common/_commonjsHelpers-8c19dec8.js';
-import { _ as _extends$n } from '../common/_index-4fa100fd.js';
+import { _ as _extends$m } from '../common/_index-4fa100fd.js';
 import '../common/hoist-non-react-statics.cjs-166bde7d.js';
 
 /*
@@ -729,7 +729,7 @@ var getTheme = function getTheme(outerTheme, theme) {
     return mergedTheme;
   }
 
-  return _extends$n({}, outerTheme, {}, theme);
+  return _extends$m({}, outerTheme, {}, theme);
 };
 
 var createCacheWithTheme = /* #__PURE__ */weakMemoize(function (outerTheme) {
@@ -5115,7 +5115,7 @@ var createStyled = function createStyled(tag, options) {
     });
 
     Styled.withComponent = function (nextTag, nextOptions) {
-      return createStyled(nextTag, _extends$n({}, options, {}, nextOptions, {
+      return createStyled(nextTag, _extends$m({}, options, {}, nextOptions, {
         shouldForwardProp: composeShouldForwardProps(Styled, nextOptions, true)
       })).apply(void 0, styles);
     };
@@ -10214,34 +10214,6 @@ var Heading$1 = /*#__PURE__*/forwardRef((props, ref) => {
   }));
 });
 
-function _extends$k() { _extends$k = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$k.apply(this, arguments); }
-
-function _objectWithoutPropertiesLoose$6(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-/**
- * Used to render texts or paragraphs.
- *
- * @see Docs https://chakra-ui.com/docs/typography/text
- */
-var Text = /*#__PURE__*/forwardRef((props, ref) => {
-  var styles = useStyleConfig("Text", props);
-
-  var _omitThemingProps = omitThemingProps(props),
-      rest = _objectWithoutPropertiesLoose$6(_omitThemingProps, ["className", "align", "decoration", "casing"]);
-
-  var aliasedProps = filterUndefined({
-    textAlign: props.align,
-    textDecoration: props.decoration,
-    textTransform: props.casing
-  });
-  return /*#__PURE__*/react.createElement(chakra.p, _extends$k({
-    ref: ref,
-    className: cx("chakra-text", props.className)
-  }, aliasedProps, rest, {
-    __css: styles
-  }));
-});
-
 function createMediaQueries(breakpoints) {
   return Object.entries(breakpoints).filter((_ref) => {
     var [key] = _ref;
@@ -10317,9 +10289,9 @@ function toMediaString(value) {
   return isNumber(value) ? value + "px" : value;
 }
 
-function _objectWithoutPropertiesLoose$7(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$6(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-function _extends$l() { _extends$l = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$l.apply(this, arguments); }
+function _extends$k() { _extends$k = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$k.apply(this, arguments); }
 
 /**
  * React hook used to get the current responsive media breakpoint.
@@ -10334,7 +10306,7 @@ function useBreakpoint(defaultBreakpoint) {
   var {
     breakpoints
   } = useTheme();
-  var mediaQueries = react.useMemo(() => createMediaQueries(_extends$l({
+  var mediaQueries = react.useMemo(() => createMediaQueries(_extends$k({
     base: "0px"
   }, breakpoints)), [breakpoints]);
   var [currentBreakpoint, setCurrentBreakpoint] = react.useState(() => {
@@ -10350,7 +10322,7 @@ function useBreakpoint(defaultBreakpoint) {
     });
 
     if (mediaQuery) {
-      var breakpoint = _objectWithoutPropertiesLoose$7(mediaQuery, ["query"]);
+      var breakpoint = _objectWithoutPropertiesLoose$6(mediaQuery, ["query"]);
 
       return breakpoint;
     }
@@ -10369,7 +10341,7 @@ function useBreakpoint(defaultBreakpoint) {
       var {
         query
       } = _ref2,
-          breakpoint = _objectWithoutPropertiesLoose$7(_ref2, ["query"]);
+          breakpoint = _objectWithoutPropertiesLoose$6(_ref2, ["query"]);
 
       var mediaQuery = window.matchMedia(query); // trigger an initial update to determine media query
 
@@ -10463,9 +10435,9 @@ function useBreakpointValue(values) {
   return getClosestValue(obj, breakpoint, breakpoints);
 }
 
-function _extends$m() { _extends$m = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$m.apply(this, arguments); }
+function _extends$l() { _extends$l = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$l.apply(this, arguments); }
 
-function _objectWithoutPropertiesLoose$8(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$7(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 var Table$1 = /*#__PURE__*/forwardRef((props, ref) => {
   var styles = useMultiStyleConfig("Table", props);
 
@@ -10473,11 +10445,11 @@ var Table$1 = /*#__PURE__*/forwardRef((props, ref) => {
       {
     className
   } = _omitThemingProps,
-      tableProps = _objectWithoutPropertiesLoose$8(_omitThemingProps, ["className"]);
+      tableProps = _objectWithoutPropertiesLoose$7(_omitThemingProps, ["className"]);
 
   return /*#__PURE__*/react.createElement(StylesProvider, {
     value: styles
-  }, /*#__PURE__*/react.createElement(chakra.table, _extends$m({
+  }, /*#__PURE__*/react.createElement(chakra.table, _extends$l({
     role: "table",
     ref: ref,
     __css: styles.table,
@@ -10489,12 +10461,12 @@ var TableCaption = /*#__PURE__*/forwardRef((props, ref) => {
   var {
     placement = "bottom"
   } = props,
-      rest = _objectWithoutPropertiesLoose$8(props, ["placement"]);
+      rest = _objectWithoutPropertiesLoose$7(props, ["placement"]);
 
   var styles = useStyles();
-  return /*#__PURE__*/react.createElement(chakra.caption, _extends$m({}, rest, {
+  return /*#__PURE__*/react.createElement(chakra.caption, _extends$l({}, rest, {
     ref: ref,
-    __css: _extends$m({}, styles.caption, {
+    __css: _extends$l({}, styles.caption, {
       captionSide: placement
     })
   }));
@@ -10502,33 +10474,26 @@ var TableCaption = /*#__PURE__*/forwardRef((props, ref) => {
 
 var Thead = /*#__PURE__*/forwardRef((props, ref) => {
   var styles = useStyles();
-  return /*#__PURE__*/react.createElement(chakra.thead, _extends$m({}, props, {
+  return /*#__PURE__*/react.createElement(chakra.thead, _extends$l({}, props, {
     ref: ref,
     __css: styles.thead
   }));
 });
 var Tbody = /*#__PURE__*/forwardRef((props, ref) => {
   var styles = useStyles();
-  return /*#__PURE__*/react.createElement(chakra.tbody, _extends$m({}, props, {
+  return /*#__PURE__*/react.createElement(chakra.tbody, _extends$l({}, props, {
     ref: ref,
     __css: styles.tbody
-  }));
-});
-var Tfoot = /*#__PURE__*/forwardRef((props, ref) => {
-  var styles = useStyles();
-  return /*#__PURE__*/react.createElement(chakra.tfoot, _extends$m({}, props, {
-    ref: ref,
-    __css: styles.tfoot
   }));
 });
 var Th = /*#__PURE__*/forwardRef((_ref, ref) => {
   var {
     isNumeric
   } = _ref,
-      rest = _objectWithoutPropertiesLoose$8(_ref, ["isNumeric"]);
+      rest = _objectWithoutPropertiesLoose$7(_ref, ["isNumeric"]);
 
   var styles = useStyles();
-  return /*#__PURE__*/react.createElement(chakra.th, _extends$m({}, rest, {
+  return /*#__PURE__*/react.createElement(chakra.th, _extends$l({}, rest, {
     ref: ref,
     __css: styles.th,
     "data-is-numeric": isNumeric
@@ -10536,7 +10501,7 @@ var Th = /*#__PURE__*/forwardRef((_ref, ref) => {
 });
 var Tr = /*#__PURE__*/forwardRef((props, ref) => {
   var styles = useStyles();
-  return /*#__PURE__*/react.createElement(chakra.tr, _extends$m({
+  return /*#__PURE__*/react.createElement(chakra.tr, _extends$l({
     role: "row"
   }, props, {
     ref: ref,
@@ -10547,10 +10512,10 @@ var Td = /*#__PURE__*/forwardRef((_ref2, ref) => {
   var {
     isNumeric
   } = _ref2,
-      rest = _objectWithoutPropertiesLoose$8(_ref2, ["isNumeric"]);
+      rest = _objectWithoutPropertiesLoose$7(_ref2, ["isNumeric"]);
 
   var styles = useStyles();
-  return /*#__PURE__*/react.createElement(chakra.td, _extends$m({
+  return /*#__PURE__*/react.createElement(chakra.td, _extends$l({
     role: "gridcell"
   }, rest, {
     ref: ref,
@@ -10559,4 +10524,4 @@ var Td = /*#__PURE__*/forwardRef((_ref2, ref) => {
   }));
 });
 
-export { Box, Button$1 as Button, ChakraProvider, Flex, Heading$1 as Heading, Spinner$1 as Spinner, Table$1 as Table, TableCaption, Tbody, Td, Text, Tfoot, Th, Thead, Tr, extendTheme, useBreakpointValue, useColorModeValue };
+export { Box, Button$1 as Button, ChakraProvider, Flex, Heading$1 as Heading, Spinner$1 as Spinner, Table$1 as Table, TableCaption, Tbody, Td, Th, Thead, Tr, extendTheme, useBreakpointValue, useColorModeValue };

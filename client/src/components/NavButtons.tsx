@@ -1,4 +1,4 @@
-import { Box, Button, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import { getCategory } from '../api/category'
 import { ItemList } from '../components/itemList'
-import { LSpinner } from 'src/components/lSpinner'
+import { LSpinner } from '../components/lSpinner'
 
 export const Beanies = () => {
 	const { data } = useQuery('beanies', () => getCategory('beanies'))

@@ -1,19 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import {
-	Flex,
-	Heading,
-	Table,
-	TableCaption,
-	Tbody,
-	Td,
-	Tfoot,
-	Th,
-	Thead,
-	Tr,
-} from '@chakra-ui/react'
-import type { CATEGORY } from 'src/api/category'
+import React, { useState } from 'react'
+import { Flex, Heading, Table, TableCaption, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import type { CATEGORY } from '../api/category'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import type { CategoryWithAvailabilityT } from 'src/data/category'
+import type { CategoryWithAvailabilityT } from '../data/category'
 import { LSpinner } from './lSpinner'
 
 interface ItemListProps {
