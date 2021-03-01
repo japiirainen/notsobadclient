@@ -25,6 +25,7 @@ const TE = __importStar(require("fp-ts/TaskEither"));
 const function_1 = require("fp-ts/function");
 const service_1 = require("../features/service");
 const ts_custom_error_1 = require("ts-custom-error");
+const logger_1 = require("./logger");
 /* eslint-disable prefer-const */
 exports.cache = {
     categories: {
@@ -34,16 +35,28 @@ exports.cache = {
     },
     availabilities: {},
 };
-const categoryCacheHandler = (category) => service_1.getAllProductsFromCategory(category)().then(r => function_1.pipe(r, E.fold(() => categoryCacheHandler(category), res => Promise.resolve(res))));
-const availabilitiesForProductsCacheHandler = (beanies, facemasks, gloves) => service_1.availabilitiesForProducts(beanies, facemasks, gloves)().then(r => function_1.pipe(r, E.fold(() => availabilitiesForProductsCacheHandler(beanies, facemasks, gloves), res => Promise.resolve(res))));
+const categoryCacheHandler = (category) => service_1.getAllProductsFromCategory(category)().then(r => function_1.pipe(r, E.fold(() => {
+    logger_1.logger.error('max retries exceeded for categories');
+    return;
+}, res => Promise.resolve(res))));
+const availabilitiesForProductsCacheHandler = (beanies, facemasks, gloves) => service_1.availabilitiesForProducts(beanies, facemasks, gloves)().then(r => function_1.pipe(r, E.fold(() => {
+    logger_1.logger.error('max retries exceeded for availabilities');
+    return;
+}, res => Promise.resolve(res))));
 const handleCache = async () => {
     const [beanies, facemasks, gloves] = await Promise.all([
         categoryCacheHandler('beanies'),
         categoryCacheHandler('facemasks'),
         categoryCacheHandler('gloves'),
     ]);
+    if (!beanies || !facemasks || !gloves) {
+        return;
+    }
     exports.cache.categories = { beanies, facemasks, gloves };
     const availabilities = await availabilitiesForProductsCacheHandler(beanies, gloves, facemasks);
+    if (!availabilities) {
+        return;
+    }
     exports.cache.availabilities = availabilities;
 };
 exports.handleCache = handleCache;

@@ -28,7 +28,6 @@ const TE = __importStar(require("fp-ts/TaskEither"));
 const O = __importStar(require("fp-ts/Option"));
 const config_1 = require("./config");
 const node_fetch_1 = __importDefault(require("node-fetch"));
-const logger_1 = require("./logger");
 class MaxRetriesError extends ts_custom_error_1.CustomError {
     constructor() {
         super(...arguments);
@@ -51,16 +50,14 @@ const retryFetch = async (url, maxRetries) => {
     try {
         const res = await node_fetch_1.default(url);
         const json = await res.json();
+        // ? This is done becouse the two apis respond with dirrefent shapes
         const data = json.response ? json.response : json;
         if (!data || data.length === 0) {
-            logger_1.logger.info('retrying', maxRetries);
-            logger_1.logger.info(data.length);
             return exports.retryFetch(url, maxRetries - 1);
         }
         return data;
     }
     catch (e) {
-        logger_1.logger.info('retry');
         return exports.retryFetch(url, maxRetries - 1);
     }
 };

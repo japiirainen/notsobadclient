@@ -31,6 +31,7 @@ export const retryFetch = async (url: string, maxRetries: number): Promise<Respo
 	try {
 		const res = await fetch(url)
 		const json = await res.json()
+		// ? This is done becouse the two apis respond with dirrefent shapes
 		const data = json.response ? json.response : json
 		if (!data || data.length === 0) {
 			return retryFetch(url, maxRetries - 1)

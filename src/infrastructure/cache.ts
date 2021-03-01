@@ -7,6 +7,7 @@ import { CATEGORY } from '../features/repo'
 import { availabilitiesForProducts, getAllProductsFromCategory } from '../features/service'
 import { CustomError } from 'ts-custom-error'
 import { ApplicationError } from './error'
+import { logger } from './logger'
 
 /* eslint-disable prefer-const */
 export let cache = {
@@ -18,12 +19,15 @@ export let cache = {
 	availabilities: {},
 }
 
-const categoryCacheHandler = (category: CATEGORY): Promise<CategoryT> =>
+const categoryCacheHandler = (category: CATEGORY): Promise<CategoryT | void> =>
 	getAllProductsFromCategory(category)().then(r =>
 		pipe(
 			r,
 			E.fold(
-				() => categoryCacheHandler(category),
+				() => {
+					logger.error('max retries exceeded for categories')
+					return
+				},
 				res => Promise.resolve(res)
 			)
 		)
@@ -33,12 +37,15 @@ const availabilitiesForProductsCacheHandler = (
 	beanies: CategoryT,
 	facemasks: CategoryT,
 	gloves: CategoryT
-): Promise<AvailabilityRawT> =>
+): Promise<AvailabilityRawT | void> =>
 	availabilitiesForProducts(beanies, facemasks, gloves)().then(r =>
 		pipe(
 			r,
 			E.fold(
-				() => availabilitiesForProductsCacheHandler(beanies, facemasks, gloves),
+				() => {
+					logger.error('max retries exceeded for availabilities')
+					return
+				},
 				res => Promise.resolve(res)
 			)
 		)
@@ -50,8 +57,14 @@ export const handleCache = async (): Promise<void> => {
 		categoryCacheHandler('facemasks'),
 		categoryCacheHandler('gloves'),
 	])
+	if (!beanies || !facemasks || !gloves) {
+		return
+	}
 	cache.categories = { beanies, facemasks, gloves }
 	const availabilities = await availabilitiesForProductsCacheHandler(beanies, gloves, facemasks)
+	if (!availabilities) {
+		return
+	}
 	cache.availabilities = availabilities
 }
 
