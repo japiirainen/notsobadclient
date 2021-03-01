@@ -7,13 +7,13 @@
 
 ### Server side
 
-I initially thought I would implement the solution only on the client side, but after running into problems that seemed quite bad I decided to move pretty much all the logic to server side.
-At first I tried to make the app work with just basic http calls and no caching or anything like that. Soon I realised, that the calls are taking too long and erroring way too often to make work on the client side.
-So i decided to try with some caching logic.
-
 The server is written in TypeScript.
 
-- I implemented the caching logic using just a plain object. I realize that this is not optimal and that it should be replaced with redis or something similar. I decided not to do that to save time and thought it's not so important for this "toy" application,
+I initially thought I would implement the solution only on the client side, but after running into problems that seemed quite bad I decided to move pretty much all the logic to server side.
+At first I tried to make the app work with just basic http calls and no caching or anything like that. Soon I realised, that the calls are taking too long and erroring way too often to make it usable for the client.
+So i decided to try with some caching logic.
+
+- I implemented the caching logic using just a plain object. I realize that this is not optimal and that it should be replaced with redis or something similar. I decided not to do that to save time and thought it's not so important for this "toy" application. And it would have made deploying a bit harder also. Allthough there might be some "plug-and-play" redis plugin.
 - So the basic idea is that on the server startup I call the function "handleCache" which can be found in src/infrastructure/cache.ts. Which starts fetching and validating all the data thats necessary for the client. At the bottom of my stack it uses a wrapper around fetch that retries for n number of times if it gets invalid data. It runs all the calls in parallel so in the perfect case its quite optimal. Of cource this can also take some time if the endpoints decide to not want to give "good" data. After the first call to "handleCache" I start a loop that calls "handleCache" every 5 minutes, there is a 5 minute internal cache on the "bad-api" side. I should also say that if the retrying fetch doesn't get data in the speciefied maxRetries tries, it will error and the cache won't get data before the next iteration. The upside of this strategy is that once the cache has data it should never get into a "bad state". This is ensured by decoing and validating the data using io-ts. And the client should always get valid data and quite quickly since it comes straight from the server-side cache.
 
 
