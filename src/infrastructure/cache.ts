@@ -8,6 +8,7 @@ import { CATEGORY } from '../features/repo'
 import { availabilitiesForProducts, getAllProductsFromCategory } from '../features/service'
 import { CustomError } from 'ts-custom-error'
 import { ApplicationError } from './error'
+import { logger } from './logger'
 interface CacheI {
 	categories: {
 		beanies: CategoryT
@@ -63,6 +64,7 @@ export const handleCache = async (): Promise<void> => {
 	// ? Merges the previous cache with new availabilities. Takes the newer one in case of duplicate data.
 	const uniqueArr = R.uniqBy(R.prop('id'), [...availabilities, ...cache.availabilities])
 	cache.availabilities = uniqueArr
+	logger.info(`time: ${new Date()} -> done with cache update...`)
 }
 
 export class CacheLookupError extends CustomError implements ApplicationError {
