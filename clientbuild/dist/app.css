@@ -11,3 +11,8 @@
 	padding: 0 3px;
 	outline: none;
 }
+
+.activenavbutton {
+	text-decoration: underline;
+	font-weight: 800;
+}

@@ -904,7 +904,6 @@ function canUseDOM() {
   return !!(typeof window !== "undefined" && window.document && window.document.createElement);
 }
 var isBrowser$1 = canUseDOM();
-var dataAttr = condition => condition ? "" : undefined;
 var cx = function cx() {
   for (var _len = arguments.length, classNames = new Array(_len), _key = 0; _key < _len; _key++) {
     classNames[_key] = arguments[_key];
@@ -10016,139 +10015,6 @@ var Spinner$1 = /*#__PURE__*/forwardRef((props, ref) => {
   }, rest), label && /*#__PURE__*/react.createElement(VisuallyHidden, null, label));
 });
 
-var [ButtonGroupProvider, useButtonGroup] = createContext({
-  strict: false,
-  name: "ButtonGroupContext"
-});
-
-function _objectWithoutPropertiesLoose$3(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-function _extends$h() { _extends$h = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$h.apply(this, arguments); }
-var Button$1 = /*#__PURE__*/forwardRef((props, ref) => {
-  var _styles$_focus;
-
-  var group = useButtonGroup();
-  var styles = useStyleConfig("Button", _extends$h({}, group, props));
-
-  var _omitThemingProps = omitThemingProps(props),
-      {
-    isDisabled = group == null ? void 0 : group.isDisabled,
-    isLoading,
-    isActive,
-    isFullWidth,
-    children,
-    leftIcon,
-    rightIcon,
-    loadingText,
-    iconSpacing = "0.5rem",
-    type = "button",
-    spinner,
-    className,
-    as
-  } = _omitThemingProps,
-      rest = _objectWithoutPropertiesLoose$3(_omitThemingProps, ["isDisabled", "isLoading", "isActive", "isFullWidth", "children", "leftIcon", "rightIcon", "loadingText", "iconSpacing", "type", "spinner", "className", "as"]);
-  /**
-   * When button is used within ButtonGroup (i.e flushed with sibling buttons),
-   * it is important to add a `zIndex` on focus.
-   *
-   * So let's read the component styles and then add `zIndex` to it.
-   */
-
-
-  var _focus = lodash_mergewith({}, (_styles$_focus = styles == null ? void 0 : styles["_focus"]) != null ? _styles$_focus : {}, {
-    zIndex: 1
-  });
-
-  var buttonStyles = _extends$h({
-    display: "inline-flex",
-    appearance: "none",
-    alignItems: "center",
-    justifyContent: "center",
-    transition: "all 250ms",
-    userSelect: "none",
-    position: "relative",
-    whiteSpace: "nowrap",
-    verticalAlign: "middle",
-    outline: "none",
-    width: isFullWidth ? "100%" : "auto"
-  }, styles, !!group && {
-    _focus
-  });
-
-  return /*#__PURE__*/react.createElement(chakra.button, _extends$h({
-    disabled: isDisabled || isLoading,
-    ref: ref,
-    as: as,
-    type: as ? undefined : type,
-    "data-active": dataAttr(isActive),
-    "data-loading": dataAttr(isLoading),
-    __css: buttonStyles,
-    className: cx("chakra-button", className)
-  }, rest), leftIcon && !isLoading && /*#__PURE__*/react.createElement(ButtonIcon, {
-    marginEnd: iconSpacing
-  }, leftIcon), isLoading && /*#__PURE__*/react.createElement(ButtonSpinner, {
-    __css: {
-      fontSize: "1em",
-      lineHeight: "normal"
-    },
-    spacing: iconSpacing,
-    label: loadingText
-  }, spinner), isLoading ? loadingText || /*#__PURE__*/react.createElement(chakra.span, {
-    opacity: 0
-  }, children) : children, rightIcon && !isLoading && /*#__PURE__*/react.createElement(ButtonIcon, {
-    marginStart: iconSpacing
-  }, rightIcon));
-});
-
-var ButtonIcon = props => {
-  var {
-    children,
-    className
-  } = props,
-      rest = _objectWithoutPropertiesLoose$3(props, ["children", "className"]);
-
-  var _children = /*#__PURE__*/react.isValidElement(children) ? /*#__PURE__*/react.cloneElement(children, {
-    "aria-hidden": true,
-    focusable: false
-  }) : children;
-
-  var _className = cx("chakra-button__icon", className);
-
-  return /*#__PURE__*/react.createElement(chakra.span, _extends$h({}, rest, {
-    className: _className
-  }), _children);
-};
-
-var ButtonSpinner = props => {
-  var {
-    label,
-    spacing,
-    children = /*#__PURE__*/react.createElement(Spinner$1, {
-      color: "currentColor",
-      width: "1em",
-      height: "1em"
-    }),
-    className,
-    __css
-  } = props,
-      rest = _objectWithoutPropertiesLoose$3(props, ["label", "spacing", "children", "className", "__css"]);
-
-  var _className = cx("chakra-button__spinner", className);
-
-  var spinnerStyles = _extends$h({
-    display: "flex",
-    alignItems: "center",
-    position: label ? "relative" : "absolute",
-    marginEnd: label ? spacing : 0
-  }, __css);
-
-  return /*#__PURE__*/react.createElement(chakra.div, _extends$h({
-    className: _className
-  }, rest, {
-    __css: spinnerStyles
-  }), children);
-};
-
 /**
  * Box is the most abstract component on top of which other chakra
  * components are built. It renders a `div` element by default.
@@ -10157,9 +10023,9 @@ var ButtonSpinner = props => {
  */
 var Box = chakra("div");
 
-function _extends$i() { _extends$i = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$i.apply(this, arguments); }
+function _extends$h() { _extends$h = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$h.apply(this, arguments); }
 
-function _objectWithoutPropertiesLoose$4(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$3(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 /**
  * React component used to create flexbox layouts.
@@ -10179,7 +10045,7 @@ var Flex = /*#__PURE__*/forwardRef((props, ref) => {
     grow,
     shrink
   } = props,
-      rest = _objectWithoutPropertiesLoose$4(props, ["direction", "align", "justify", "wrap", "basis", "grow", "shrink"]);
+      rest = _objectWithoutPropertiesLoose$3(props, ["direction", "align", "justify", "wrap", "basis", "grow", "shrink"]);
 
   var styles = {
     display: "flex",
@@ -10191,24 +10057,62 @@ var Flex = /*#__PURE__*/forwardRef((props, ref) => {
     flexGrow: grow,
     flexShrink: shrink
   };
-  return /*#__PURE__*/react.createElement(chakra.div, _extends$i({
+  return /*#__PURE__*/react.createElement(chakra.div, _extends$h({
     ref: ref,
     __css: styles
   }, rest));
 });
 
-function _extends$j() { _extends$j = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$j.apply(this, arguments); }
+function _extends$i() { _extends$i = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$i.apply(this, arguments); }
 
-function _objectWithoutPropertiesLoose$5(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$4(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 var Heading$1 = /*#__PURE__*/forwardRef((props, ref) => {
   var styles = useStyleConfig("Heading", props);
 
   var _omitThemingProps = omitThemingProps(props),
-      rest = _objectWithoutPropertiesLoose$5(_omitThemingProps, ["className"]);
+      rest = _objectWithoutPropertiesLoose$4(_omitThemingProps, ["className"]);
 
-  return /*#__PURE__*/react.createElement(chakra.h2, _extends$j({
+  return /*#__PURE__*/react.createElement(chakra.h2, _extends$i({
     ref: ref,
     className: cx("chakra-heading", props.className)
+  }, rest, {
+    __css: styles
+  }));
+});
+
+function _extends$j() { _extends$j = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$j.apply(this, arguments); }
+
+function _objectWithoutPropertiesLoose$5(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+/**
+ * Links are accessible elements used primarily for navigation.
+ *
+ * It integrates well with other routing libraries like
+ * React Router, Reach Router and Next.js Link.
+ *
+ * @example
+ *
+ * ```jsx
+ * <Link as={ReactRouterLink} to="/home">Home</Link>
+ * ```
+ *
+ * @see Docs https://chakra-ui.com/docs/layout/link
+ */
+var Link$1 = /*#__PURE__*/forwardRef((props, ref) => {
+  var styles = useStyleConfig("Link", props);
+
+  var _omitThemingProps = omitThemingProps(props),
+      {
+    className,
+    isExternal
+  } = _omitThemingProps,
+      rest = _objectWithoutPropertiesLoose$5(_omitThemingProps, ["className", "isExternal"]);
+
+  return /*#__PURE__*/react.createElement(chakra.a, _extends$j({
+    target: isExternal ? "_blank" : undefined,
+    rel: isExternal ? "noopener noreferrer" : undefined,
+    ref: ref,
+    className: cx("chakra-link", className)
   }, rest, {
     __css: styles
   }));
@@ -10471,19 +10375,6 @@ var Tbody = /*#__PURE__*/forwardRef((props, ref) => {
     __css: styles.tbody
   }));
 });
-var Th = /*#__PURE__*/forwardRef((_ref, ref) => {
-  var {
-    isNumeric
-  } = _ref,
-      rest = _objectWithoutPropertiesLoose$7(_ref, ["isNumeric"]);
-
-  var styles = useStyles();
-  return /*#__PURE__*/react.createElement(chakra.th, _extends$l({}, rest, {
-    ref: ref,
-    __css: styles.th,
-    "data-is-numeric": isNumeric
-  }));
-});
 var Tr = /*#__PURE__*/forwardRef((props, ref) => {
   var styles = useStyles();
   return /*#__PURE__*/react.createElement(chakra.tr, _extends$l({
@@ -10509,4 +10400,4 @@ var Td = /*#__PURE__*/forwardRef((_ref2, ref) => {
   }));
 });
 
-export { Box, Button$1 as Button, ChakraProvider, Flex, Heading$1 as Heading, Spinner$1 as Spinner, Table$1 as Table, Tbody, Td, Th, Thead, Tr, extendTheme, useBreakpointValue, useColorModeValue };
+export { Box, ChakraProvider, Flex, Heading$1 as Heading, Link$1 as Link, Spinner$1 as Spinner, Table$1 as Table, Tbody, Td, Thead, Tr, extendTheme, useBreakpoint, useBreakpointValue, useColorModeValue };

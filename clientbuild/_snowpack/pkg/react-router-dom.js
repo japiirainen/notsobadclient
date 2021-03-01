@@ -2437,7 +2437,7 @@ function joinClassnames() {
  */
 
 
-forwardRef$1(function (_ref, forwardedRef) {
+var NavLink = forwardRef$1(function (_ref, forwardedRef) {
   var _ref$ariaCurrent = _ref["aria-current"],
       ariaCurrent = _ref$ariaCurrent === void 0 ? "page" : _ref$ariaCurrent,
       _ref$activeClassName = _ref.activeClassName,
@@ -2489,4 +2489,4 @@ forwardRef$1(function (_ref, forwardedRef) {
   });
 });
 
-export { BrowserRouter, Link, Route, Switch, useHistory };
+export { BrowserRouter, Link, NavLink, Route, Switch, useHistory };

@@ -1,12 +1,13 @@
 import React from 'react'
-import { Flex, Spinner } from '@chakra-ui/react'
+import { Flex, Spinner, useBreakpointValue } from '@chakra-ui/react'
 import { Nav } from './Nav'
 
-export const LSpinner: React.FC<{}> = () => {
+export const LSpinner = () => {
+	const mt = useBreakpointValue({ base: 150, md: 100 })
 	return (
 		<Flex justify={'center'}>
 			<Nav />
-			<Spinner mt={100} size={'lg'} />
+			<Spinner mt={mt} size={'lg'} />
 		</Flex>
 	)
 }
