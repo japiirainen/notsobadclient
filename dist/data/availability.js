@@ -19,8 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Availability = exports.AvailabilityRaw = void 0;
+exports.AvailabilityRaw = void 0;
 const I = __importStar(require("io-ts"));
 const availabilityItem_1 = require("./availabilityItem");
 exports.AvailabilityRaw = I.array(availabilityItem_1.AvailabilityItemRaw);
-exports.Availability = I.array(availabilityItem_1.AvailabilityItem);

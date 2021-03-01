@@ -1,17 +1,16 @@
 import * as TE from 'fp-ts/TaskEither'
 import * as O from 'fp-ts/Option'
-import { FetchError } from '../infrastructure/fetch'
-import { teFetch } from '../infrastructure/fetch'
-import fetch from 'node-fetch'
+import { MaxRetriesError } from '../infrastructure/fetch'
+import { teFetch, retryFetch } from '../infrastructure/fetch'
 
 export type CATEGORY = 'beanies' | 'facemasks' | 'gloves'
 
 export const getCategory: (
 	category: CATEGORY
-) => TE.TaskEither<FetchError, O.Option<unknown>> = c =>
-	teFetch(baseUrl => fetch(`${baseUrl}/products/${c}`))
+) => TE.TaskEither<MaxRetriesError, O.Option<unknown>> = c =>
+	teFetch(baseUrl => retryFetch(`${baseUrl}/products/${c}`, 10))
 
 export const getAvailabilities: (
 	manufacturer: string
-) => TE.TaskEither<FetchError, O.Option<unknown>> = m =>
-	teFetch(baseUrl => fetch(`${baseUrl}/availability/${m}`))
+) => TE.TaskEither<MaxRetriesError, O.Option<unknown>> = m =>
+	teFetch(baseUrl => retryFetch(`${baseUrl}/availability/${m}`, 10))

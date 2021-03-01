@@ -63,7 +63,7 @@ export class CacheLookupError extends CustomError implements ApplicationError {
 
 export type CacheKey = 'beanies' | 'facemasks' | 'gloves' | 'availabilities'
 
-export const getFromCache = (i: CacheKey): TE.TaskEither<CacheLookupError, any> => {
+export const cacheLookup = (i: CacheKey): TE.TaskEither<CacheLookupError, any> => {
 	if (i === 'beanies' || i === 'facemasks' || i === 'gloves') {
 		if (Object.entries(cache.categories[i]).length !== 0) {
 			return TE.of(cache.categories[i])

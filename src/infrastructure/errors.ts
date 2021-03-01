@@ -1,5 +1,5 @@
 import { CustomError } from 'ts-custom-error'
-import { ApplicationError } from '../infrastructure/error'
+import { ApplicationError } from './error'
 
 export class NoProductsError extends CustomError implements ApplicationError {
 	status = 400

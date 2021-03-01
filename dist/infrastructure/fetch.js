@@ -18,31 +18,50 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.teFetch = exports.FetchError = void 0;
+exports.retryFetch = exports.teFetch = exports.MaxRetriesError = void 0;
 const ts_custom_error_1 = require("ts-custom-error");
-const uuid_1 = require("uuid");
 const TE = __importStar(require("fp-ts/TaskEither"));
 const O = __importStar(require("fp-ts/Option"));
 const config_1 = require("./config");
-class FetchError extends ts_custom_error_1.CustomError {
+const node_fetch_1 = __importDefault(require("node-fetch"));
+const logger_1 = require("./logger");
+class MaxRetriesError extends ts_custom_error_1.CustomError {
     constructor() {
         super(...arguments);
         this.status = 500;
-        this.code = uuid_1.v4();
+        this.code = 'MaxRetriesError';
         this.log = true;
     }
 }
-exports.FetchError = FetchError;
+exports.MaxRetriesError = MaxRetriesError;
 const teFetch = (f) => TE.tryCatch(async () => {
     const baseUrl = config_1.config.apiBase;
+    const json = await f(baseUrl);
+    return O.fromNullable(json);
+}, () => new MaxRetriesError());
+exports.teFetch = teFetch;
+const retryFetch = async (url, maxRetries) => {
+    if (maxRetries === 0) {
+        throw new MaxRetriesError();
+    }
     try {
-        const res = await f(baseUrl);
+        const res = await node_fetch_1.default(url);
         const json = await res.json();
-        return json.response ? O.fromNullable(json.response) : O.fromNullable(json);
+        const data = json.response ? json.response : json;
+        if (!data || data.length === 0) {
+            logger_1.logger.info('retrying', maxRetries);
+            logger_1.logger.info(data.length);
+            return exports.retryFetch(url, maxRetries - 1);
+        }
+        return data;
     }
     catch (e) {
-        throw new FetchError(e.message);
+        logger_1.logger.info('retry');
+        return exports.retryFetch(url, maxRetries - 1);
     }
-}, () => new FetchError('fetch error'));
-exports.teFetch = teFetch;
+};
+exports.retryFetch = retryFetch;

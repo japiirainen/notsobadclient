@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFromCache = exports.CacheLookupError = exports.handleCache = exports.cache = void 0;
+exports.cacheLookup = exports.CacheLookupError = exports.handleCache = exports.cache = void 0;
 const E = __importStar(require("fp-ts/Either"));
 const TE = __importStar(require("fp-ts/TaskEither"));
 const function_1 = require("fp-ts/function");
@@ -56,7 +56,7 @@ class CacheLookupError extends ts_custom_error_1.CustomError {
     }
 }
 exports.CacheLookupError = CacheLookupError;
-const getFromCache = (i) => {
+const cacheLookup = (i) => {
     if (i === 'beanies' || i === 'facemasks' || i === 'gloves') {
         if (Object.entries(exports.cache.categories[i]).length !== 0) {
             return TE.of(exports.cache.categories[i]);
@@ -68,4 +68,4 @@ const getFromCache = (i) => {
     }
     return TE.left(new CacheLookupError());
 };
-exports.getFromCache = getFromCache;
+exports.cacheLookup = cacheLookup;

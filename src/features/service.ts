@@ -12,9 +12,9 @@ import {
 	CategoryParamDecodeError,
 	NoAvailabilitiesRawError,
 	NoProductsError,
-} from '../data/errors'
+} from '../infrastructure/errors'
 import { ProductT } from '../data/product'
-import { CacheKey, CacheLookupError, getFromCache } from '../infrastructure/cache'
+import { CacheKey, CacheLookupError, cacheLookup } from '../infrastructure/cache'
 import { getAvailabilityR } from '../infrastructure/regex'
 import { CATEGORY, getAvailabilities, getCategory } from './repo'
 
@@ -63,7 +63,6 @@ export const getAvailabilitiesFromMan: (
 const eqManufacturer: Eq<string> = {
 	equals: (x, y) => x === y,
 }
-
 export const productstToManSet = (ps: CategoryT): Set<string> =>
 	pipe(
 		ps,
@@ -80,7 +79,7 @@ export const availabilitiesForProducts = (
 	const tasks = noDubs.map(getAvailabilitiesFromMan)
 	return pipe(
 		A.array.sequence(TE.taskEither)(tasks),
-		// ? propably should be using TE.flatten, fix if you have time
+		// ? propably should be using monoid concat, fix if you have time
 		//@ts-ignore
 		TE.map(avs => avs.flat())
 	)
@@ -104,11 +103,11 @@ export const getProductsWithAvailability = (
 > =>
 	pipe(
 		TE.bindTo('category')(decodeCatParam(category)),
-		TE.bind('ps', ({ category }) => getFromCache(category as CacheKey)),
-		TE.bind('as', () => getFromCache('availabilities')),
-		TE.bind('categoryWithAvailabilities', ({ as, ps }) => {
-			const asMap = availaBilitiesToMap(as)
-			const psWithAvailability: CategoryWithAvailabilityT = ps.map((p: ProductT) => {
+		TE.bind('products', ({ category }) => cacheLookup(category as CacheKey)),
+		TE.bind('availabilities', () => cacheLookup('availabilities')),
+		TE.bind('categoryWithAvailabilities', ({ availabilities, products }) => {
+			const asMap = availaBilitiesToMap(availabilities)
+			const psWithAvailability: CategoryWithAvailabilityT = products.map((p: ProductT) => {
 				const avFowP = asMap.get(p.id)
 				return avFowP ? { ...p, availability: avFowP } : { ...p, availability: 'not found' }
 			})

@@ -9,6 +9,7 @@ const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const router_1 = require("./features/router");
 const path_1 = __importDefault(require("path"));
+const cache_1 = require("./infrastructure/cache");
 const createApp = async () => {
     const app = express_1.default();
     const apiRoutes = express_1.default.Router();
@@ -20,6 +21,7 @@ const createApp = async () => {
     }))
         .use(express_1.default.json())
         .use('/api', apiRoutes)
+        .get('/test', (req, res) => res.json({ cache: cache_1.cache }))
         // ? serve react app
         // ? let the react app to handle any unknown routes
         // ? serve up the index.html if express does'nt recognize the route

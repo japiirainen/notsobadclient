@@ -1,30 +1,42 @@
 import { CustomError } from 'ts-custom-error'
 import { ApplicationError } from './error'
-import { v4 as uuidv4 } from 'uuid'
 import * as TE from 'fp-ts/TaskEither'
 import * as O from 'fp-ts/Option'
 import { config } from './config'
 import { Response } from 'node-fetch'
+import fetch from 'node-fetch'
 
-export class FetchError extends CustomError implements ApplicationError {
+export class MaxRetriesError extends CustomError implements ApplicationError {
 	status = 500
-	code = uuidv4()
+	code = 'MaxRetriesError'
 	log = true
 }
 
 export const teFetch = <T>(
-	f: (baseUrl: string) => Promise<Response>
-): TE.TaskEither<FetchError, O.Option<T>> =>
+	f: (baseUrl: string) => Promise<T>
+): TE.TaskEither<MaxRetriesError, O.Option<T>> =>
 	TE.tryCatch(
 		async () => {
 			const baseUrl = config.apiBase as string
-			try {
-				const res = await f(baseUrl)
-				const json = await res.json()
-				return json.response ? O.fromNullable(json.response) : O.fromNullable(json)
-			} catch (e) {
-				throw new FetchError(e.message)
-			}
+			const json = await f(baseUrl)
+			return O.fromNullable(json)
 		},
-		() => new FetchError('fetch error')
+		() => new MaxRetriesError()
 	)
+
+export const retryFetch = async (url: string, maxRetries: number): Promise<Response> => {
+	if (maxRetries === 0) {
+		throw new MaxRetriesError()
+	}
+	try {
+		const res = await fetch(url)
+		const json = await res.json()
+		const data = json.response ? json.response : json
+		if (!data || data.length === 0) {
+			return retryFetch(url, maxRetries - 1)
+		}
+		return data
+	} catch (e) {
+		return retryFetch(url, maxRetries - 1)
+	}
+}
