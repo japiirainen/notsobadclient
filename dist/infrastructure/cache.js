@@ -26,6 +26,7 @@ const R = __importStar(require("ramda"));
 const function_1 = require("fp-ts/function");
 const service_1 = require("../features/service");
 const ts_custom_error_1 = require("ts-custom-error");
+const logger_1 = require("./logger");
 /* eslint-disable prefer-const */
 exports.cache = {
     categories: {
@@ -48,6 +49,7 @@ const handleCache = async () => {
     // ? Merges the previous cache with new availabilities. Takes the newer one in case of duplicate data.
     const uniqueArr = R.uniqBy(R.prop('id'), [...availabilities, ...exports.cache.availabilities]);
     exports.cache.availabilities = uniqueArr;
+    logger_1.logger.info(`time: ${new Date()} -> done with cache update...`);
 };
 exports.handleCache = handleCache;
 class CacheLookupError extends ts_custom_error_1.CustomError {
