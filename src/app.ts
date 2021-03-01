@@ -19,7 +19,6 @@ export const createApp = async (): Promise<Express> => {
 		)
 		.use(express.json())
 		.use('/api', apiRoutes)
-		.get('/test', (req, res) => res.json({ as: cache.availabilities }))
 		// ? serve react app
 		// ? let the react app to handle any unknown routes
 		// ? serve up the index.html if express does'nt recognize the route

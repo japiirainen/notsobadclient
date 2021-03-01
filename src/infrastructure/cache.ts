@@ -8,8 +8,6 @@ import { CATEGORY } from '../features/repo'
 import { availabilitiesForProducts, getAllProductsFromCategory } from '../features/service'
 import { CustomError } from 'ts-custom-error'
 import { ApplicationError } from './error'
-import { logger } from './logger'
-
 interface CacheI {
 	categories: {
 		beanies: CategoryT
@@ -62,7 +60,8 @@ export const handleCache = async (): Promise<void> => {
 	])
 	cache.categories = { beanies, facemasks, gloves }
 	const availabilities = await availabilitiesForProductsCacheHandler(beanies, gloves, facemasks)
-	const uniqueArr = R.uniqBy(R.prop('id'), [...cache.availabilities, ...availabilities])
+	// ? Merges the previous cache with new availabilities. Takes the newer one in case of duplicate data.
+	const uniqueArr = R.uniqBy(R.prop('id'), [...availabilities, ...cache.availabilities])
 	cache.availabilities = uniqueArr
 }
 

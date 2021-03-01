@@ -52,6 +52,7 @@ const retryFetch = async (url, maxRetries) => {
         const json = await res.json();
         // ? This is done because the two apis respond with different shapes
         const data = json.response ? json.response : json;
+        // ? both availabilities and products have id fields so I can the the data.id check
         if (!data || !data[0].id) {
             await sleep(2000);
             return exports.retryFetch(url, maxRetries - 1);

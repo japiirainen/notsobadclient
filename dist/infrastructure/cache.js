@@ -45,7 +45,8 @@ const handleCache = async () => {
     ]);
     exports.cache.categories = { beanies, facemasks, gloves };
     const availabilities = await availabilitiesForProductsCacheHandler(beanies, gloves, facemasks);
-    const uniqueArr = R.uniqBy(R.prop('id'), [...exports.cache.availabilities, ...availabilities]);
+    // ? Merges the previous cache with new availabilities. Takes the newer one in case of duplicate data.
+    const uniqueArr = R.uniqBy(R.prop('id'), [...availabilities, ...exports.cache.availabilities]);
     exports.cache.availabilities = uniqueArr;
 };
 exports.handleCache = handleCache;
