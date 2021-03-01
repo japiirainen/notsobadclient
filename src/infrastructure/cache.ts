@@ -28,15 +28,12 @@ export let cache: CacheI = {
 	availabilities: [],
 }
 
-const categoryCacheHandler = (category: CATEGORY): Promise<CategoryT | void> =>
+const categoryCacheHandler = (category: CATEGORY): Promise<CategoryT> =>
 	getAllProductsFromCategory(category)().then(r =>
 		pipe(
 			r,
 			E.fold(
-				() => {
-					logger.error('max retries exceeded for categories')
-					return
-				},
+				() => categoryCacheHandler(category),
 				res => Promise.resolve(res)
 			)
 		)
@@ -46,15 +43,12 @@ const availabilitiesForProductsCacheHandler = (
 	beanies: CategoryT,
 	facemasks: CategoryT,
 	gloves: CategoryT
-): Promise<AvailabilityRawT | void> =>
+): Promise<AvailabilityRawT> =>
 	availabilitiesForProducts(beanies, facemasks, gloves)().then(r =>
 		pipe(
 			r,
 			E.fold(
-				() => {
-					logger.error('max retries exceeded for availabilities')
-					return
-				},
+				() => availabilitiesForProductsCacheHandler(beanies, facemasks, gloves),
 				res => Promise.resolve(res)
 			)
 		)
@@ -66,14 +60,8 @@ export const handleCache = async (): Promise<void> => {
 		categoryCacheHandler('facemasks'),
 		categoryCacheHandler('gloves'),
 	])
-	if (!beanies || !facemasks || !gloves) {
-		return
-	}
 	cache.categories = { beanies, facemasks, gloves }
 	const availabilities = await availabilitiesForProductsCacheHandler(beanies, gloves, facemasks)
-	if (!availabilities) {
-		return
-	}
 	const uniqueArr = R.uniqBy(R.prop('id'), [...cache.availabilities, ...availabilities])
 	cache.availabilities = uniqueArr
 }
