@@ -23,3 +23,4 @@ exports.AvailabilityRaw = void 0;
 const I = __importStar(require("io-ts"));
 const availabilityItem_1 = require("./availabilityItem");
 exports.AvailabilityRaw = I.array(availabilityItem_1.AvailabilityItemRaw);
+//# sourceMappingURL=availability.js.map

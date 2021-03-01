@@ -68,3 +68,4 @@ const availaBilitiesToMap = (as) => {
     as.forEach(a => asMap.set(a.id.toLowerCase(), regex_1.getAvailabilityR(a.DATAPAYLOAD)));
     return asMap;
 };
+//# sourceMappingURL=service.js.map

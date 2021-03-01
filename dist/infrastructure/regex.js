@@ -5,3 +5,4 @@ const getAvailabilityR = s =>
 //@ts-ignore
 s.match(/INSTOCKVALUE>(\w*?)<\/INSTOCKVALUE/)[1] || 'not found';
 exports.getAvailabilityR = getAvailabilityR;
+//# sourceMappingURL=regex.js.map

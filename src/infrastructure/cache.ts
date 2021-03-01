@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either'
 import * as TE from 'fp-ts/TaskEither'
+import * as R from 'ramda'
 import { pipe } from 'fp-ts/function'
 import { AvailabilityRawT } from '../data/availability'
 import { CategoryT } from '../data/category'
@@ -9,14 +10,22 @@ import { CustomError } from 'ts-custom-error'
 import { ApplicationError } from './error'
 import { logger } from './logger'
 
-/* eslint-disable prefer-const */
-export let cache = {
+interface CacheI {
 	categories: {
-		beanies: {},
-		facemasks: {},
-		gloves: {},
+		beanies: CategoryT
+		facemasks: CategoryT
+		gloves: CategoryT
+	}
+	availabilities: AvailabilityRawT
+}
+/* eslint-disable prefer-const */
+export let cache: CacheI = {
+	categories: {
+		beanies: [],
+		facemasks: [],
+		gloves: [],
 	},
-	availabilities: {},
+	availabilities: [],
 }
 
 const categoryCacheHandler = (category: CATEGORY): Promise<CategoryT | void> =>
@@ -65,7 +74,8 @@ export const handleCache = async (): Promise<void> => {
 	if (!availabilities) {
 		return
 	}
-	cache.availabilities = availabilities
+	const uniqueArr = R.uniqBy(R.prop('id'), [...cache.availabilities, ...availabilities])
+	cache.availabilities = uniqueArr
 }
 
 export class CacheLookupError extends CustomError implements ApplicationError {

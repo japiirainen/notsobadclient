@@ -29,3 +29,4 @@ exports.router = {
         service_1.getProductsWithAvailability(req.params.category)().then(r => function_1.pipe(r, E.fold(error_1.processError(res), ({ categoryWithAvailabilities }) => res.status(200).json({ categoryWithAvailabilities }))));
     },
 };
+//# sourceMappingURL=router.js.map

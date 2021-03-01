@@ -25,3 +25,4 @@ exports.AvailabilityItemRaw = I.interface({
     id: I.string,
     DATAPAYLOAD: I.string,
 });
+//# sourceMappingURL=availabilityItem.js.map

@@ -50,15 +50,19 @@ const retryFetch = async (url, maxRetries) => {
     try {
         const res = await node_fetch_1.default(url);
         const json = await res.json();
-        // ? This is done becouse the two apis respond with dirrefent shapes
+        // ? This is done because the two apis respond with different shapes
         const data = json.response ? json.response : json;
-        if (!data || data.length === 0) {
+        if (!data || !data[0].id) {
+            await sleep(2000);
             return exports.retryFetch(url, maxRetries - 1);
         }
         return data;
     }
     catch (e) {
+        await sleep(2000);
         return exports.retryFetch(url, maxRetries - 1);
     }
 };
 exports.retryFetch = retryFetch;
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+//# sourceMappingURL=fetch.js.map

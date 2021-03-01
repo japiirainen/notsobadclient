@@ -9,3 +9,4 @@ app_1.createApp().then(app => app.listen(config_1.config.application.port, () =>
     setInterval(() => cache_1.handleCache(), 300000);
     logger_1.logger.info(`${config_1.config.application.name} is listening on ${config_1.config.application.port}`);
 }));
+//# sourceMappingURL=index.js.map

@@ -22,6 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.cacheLookup = exports.CacheLookupError = exports.handleCache = exports.cache = void 0;
 const E = __importStar(require("fp-ts/Either"));
 const TE = __importStar(require("fp-ts/TaskEither"));
+const R = __importStar(require("ramda"));
 const function_1 = require("fp-ts/function");
 const service_1 = require("../features/service");
 const ts_custom_error_1 = require("ts-custom-error");
@@ -29,11 +30,11 @@ const logger_1 = require("./logger");
 /* eslint-disable prefer-const */
 exports.cache = {
     categories: {
-        beanies: {},
-        facemasks: {},
-        gloves: {},
+        beanies: [],
+        facemasks: [],
+        gloves: [],
     },
-    availabilities: {},
+    availabilities: [],
 };
 const categoryCacheHandler = (category) => service_1.getAllProductsFromCategory(category)().then(r => function_1.pipe(r, E.fold(() => {
     logger_1.logger.error('max retries exceeded for categories');
@@ -57,7 +58,8 @@ const handleCache = async () => {
     if (!availabilities) {
         return;
     }
-    exports.cache.availabilities = availabilities;
+    const uniqueArr = R.uniqBy(R.prop('id'), [...exports.cache.availabilities, ...availabilities]);
+    exports.cache.availabilities = uniqueArr;
 };
 exports.handleCache = handleCache;
 class CacheLookupError extends ts_custom_error_1.CustomError {
@@ -82,3 +84,4 @@ const cacheLookup = (i) => {
     return TE.left(new CacheLookupError());
 };
 exports.cacheLookup = cacheLookup;
+//# sourceMappingURL=cache.js.map

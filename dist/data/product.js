@@ -38,3 +38,4 @@ exports.ProductWithAvailability = I.interface({
     type: I.string,
     availability: I.string,
 });
+//# sourceMappingURL=product.js.map

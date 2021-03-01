@@ -41,3 +41,4 @@ class ValidationFailed extends ts_custom_error_1.CustomError {
     }
 }
 exports.ValidationFailed = ValidationFailed;
+//# sourceMappingURL=error.js.map

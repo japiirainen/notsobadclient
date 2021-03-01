@@ -28,3 +28,4 @@ exports.logger = winston_1.default.createLogger({
 if (process.env.NODE_ENV === "production") {
     exports.logger.add(new winston_1.default.transports.File({ filename: "error.log" }));
 }
+//# sourceMappingURL=logger.js.map

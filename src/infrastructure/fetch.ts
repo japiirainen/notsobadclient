@@ -31,13 +31,17 @@ export const retryFetch = async (url: string, maxRetries: number): Promise<Respo
 	try {
 		const res = await fetch(url)
 		const json = await res.json()
-		// ? This is done becouse the two apis respond with dirrefent shapes
+		// ? This is done because the two apis respond with different shapes
 		const data = json.response ? json.response : json
-		if (!data || data.length === 0) {
+		if (!data || !data[0].id) {
+			await sleep(2000)
 			return retryFetch(url, maxRetries - 1)
 		}
 		return data
 	} catch (e) {
+		await sleep(2000)
 		return retryFetch(url, maxRetries - 1)
 	}
 }
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))

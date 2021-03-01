@@ -8,9 +8,9 @@ export type CATEGORY = 'beanies' | 'facemasks' | 'gloves'
 export const getCategory: (
 	category: CATEGORY
 ) => TE.TaskEither<MaxRetriesError, O.Option<unknown>> = c =>
-	teFetch(baseUrl => retryFetch(`${baseUrl}/products/${c}`, 10))
+	teFetch(baseUrl => retryFetch(`${baseUrl}/products/${c}`, 20))
 
 export const getAvailabilities: (
 	manufacturer: string
 ) => TE.TaskEither<MaxRetriesError, O.Option<unknown>> = m =>
-	teFetch(baseUrl => retryFetch(`${baseUrl}/availability/${m}`, 10))
+	teFetch(baseUrl => retryFetch(`${baseUrl}/availability/${m}`, 20))

@@ -47,3 +47,4 @@ class CategoryParamDecodeError extends ts_custom_error_1.CustomError {
     }
 }
 exports.CategoryParamDecodeError = CategoryParamDecodeError;
+//# sourceMappingURL=errors.js.map

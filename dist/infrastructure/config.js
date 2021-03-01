@@ -16,3 +16,4 @@ exports.config = {
     },
     apiBase: process.env.API_BASE,
 };
+//# sourceMappingURL=config.js.map

@@ -25,3 +25,4 @@ const product_1 = require("./product");
 exports.Category = I.array(product_1.Product);
 exports.CategoryWithAvailability = I.array(product_1.ProductWithAvailability);
 exports.categoryParam = I.string;
+//# sourceMappingURL=category.js.map
